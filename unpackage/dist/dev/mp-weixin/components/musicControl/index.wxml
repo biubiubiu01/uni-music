@@ -1,0 +1,1 @@
+<block wx:if="{{playInfo}}"><view class="fotter-container data-v-6becae38"></view></block>

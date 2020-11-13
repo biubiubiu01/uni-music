@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "zy-item": "/pages/index/zy-song/zy-item"
+  }
+}
