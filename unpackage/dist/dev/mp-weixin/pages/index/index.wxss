@@ -24,39 +24,40 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.recommend-container.data-v-b6a39ca4 {
+.recommend-container.data-v-57280228 {
   position: relative;
   height: 100%;
 }
-.recommend-container .main-container.data-v-b6a39ca4 {
+.recommend-container .main-container.data-v-57280228 {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
   position: relative;
 }
-.recommend-container .main-container .banner-wrapper.data-v-b6a39ca4 {
+.recommend-container .main-container .banner-wrapper.data-v-57280228 {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   padding: 10px;
 }
-.recommend-container .main-container .banner-wrapper .banner-item.data-v-b6a39ca4 {
-  border-radius: 5px;
+.recommend-container .main-container .banner-wrapper .banner-item.data-v-57280228 {
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
 }
-.recommend-container .main-container .list-wrapper.data-v-b6a39ca4 {
+.recommend-container .main-container .list-wrapper.data-v-57280228 {
   margin: 1.5px 0;
 }
-.recommend-container .main-container .list-wrapper .list-item.data-v-b6a39ca4 {
+.recommend-container .main-container .list-wrapper .list-item.data-v-57280228 {
   text-align: center;
   font-size: 24rpx;
 }
-.recommend-container .main-container .list-wrapper .list-ico.data-v-b6a39ca4 {
+.recommend-container .main-container .list-wrapper .list-ico.data-v-57280228 {
   font-size: 54rpx;
   margin-bottom: 4px;
 }
-.recommend-container .main-container .music-wrapper.data-v-b6a39ca4 {
+.recommend-container .main-container .music-wrapper.data-v-57280228 {
   margin: 20px 0;
 }
-.recommend-container .main-container .music-wrapper.data-v-b6a39ca4:last-of-type {
+.recommend-container .main-container .music-wrapper.data-v-57280228:last-of-type {
   margin-bottom: 0;
 }
 

@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "play-icon": "/components/playIcon/index"
+  },
   "component": true
 }

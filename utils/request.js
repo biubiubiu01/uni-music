@@ -1,10 +1,8 @@
-const baseURL = 'http://api.cloudmusic.pulsating.cn:3000';
+const baseURL = 'http://localhost:3000';
 
 const request = {
-	get(url, data = null) {
-		uni.showLoading({
-			title: '加载中'
-		});
+	get(url, data ) {
+
 		return new Promise((resolve, reject) => {
 			uni.request({
 				url: baseURL + url,
@@ -15,34 +13,28 @@ const request = {
 				},
 				method: "GET",
 				success: (response) => {
-					uni.hideLoading();
 					let res = response.data
 					if (res.code === 200) {
 						resolve(res)
 					} else {
+						reject(res)
 						showError(res);
 					}
 				},
 				fail: (error) => {
-					uni.hideLoading();
 					if (error && error.response) {
 						reject(error.response)
 						showError(error.response);
 					}
 				},
-				complete: () => {
-					setTimeout(function() {
-						uni.hideLoading();
-					}, 250);
-				}
+
+
 			});
 		})
 
 	},
-	post(url, data = null) {
-		uni.showLoading({
-			title: '加载中'
-		});
+	post(url, data ) {
+
 		return new Promise((resolve, reject) => {
 			uni.request({
 				url: baseURL + url,
@@ -57,19 +49,17 @@ const request = {
 					if (res.code === 200) {
 						resolve(res)
 					} else {
+						reject(res)
 						showError(res);
+
 					}
 				},
 				fail: (error) => {
-					uni.hideLoading();
 					if (error && error.response) {
 						reject(error.response)
 						showError(error.response);
 					}
 				},
-				complete: () => {
-					uni.hideLoading();
-				}
 			});
 		})
 	},
@@ -119,11 +109,11 @@ const showError = error => {
 	uni.showToast({
 		title: errorMsg,
 		icon: 'none',
-		duration: 2000,
+		duration: 3000,
 		complete: function() {
 			setTimeout(function() {
 				uni.hideToast();
-			}, 2000);
+			}, 3000);
 		}
 	});
 }

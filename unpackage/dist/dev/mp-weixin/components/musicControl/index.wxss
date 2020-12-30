@@ -24,16 +24,67 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.fotter-container.data-v-6becae38 {
-  height: 90rpx;
-  line-height: 90rpx;
-  color: #fff;
+.fotter-container.data-v-cfcae314 {
+  height: 110rpx;
   width: 100%;
+}
+.fotter-container .fixed-container.data-v-cfcae314 {
   position: fixed;
-  z-index: 1024;
-  bottom: 50px;
-  background-image: -webkit-gradient(linear, left top, right top, from(#fc80dc), to(#ff9c57));
-  background-image: -webkit-linear-gradient(left, #fc80dc 0%, #ff9c57 100%);
-  background-image: linear-gradient(to right, #fc80dc 0%, #ff9c57 100%);
+  z-index: 20;
+  width: 100%;
+  height: 110rpx;
+  bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.33);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  background: #fff;
+}
+.fotter-container .playImage.data-v-cfcae314 {
+  width: 80rpx;
+  height: 80rpx;
+  margin: auto 12px auto 6px;
+}
+.fotter-container .play-center.data-v-cfcae314 {
+  -webkit-box-flex: 1;
+  -webkit-flex: auto;
+          flex: auto;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-align-content: center;
+          align-content: center;
+}
+.fotter-container .play-center .music-name.data-v-cfcae314 {
+  color: #000;
+  font-size: 30rpx;
+  margin-bottom: 3px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fotter-container .play-center .music-author.data-v-cfcae314 {
+  font-size: 12px;
+  color: #666;
+  width: 100%;
+}
+.fotter-container .play-right.data-v-cfcae314 {
+  width: 92px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.fotter-container .play-right .play-list.data-v-cfcae314 {
+  font-size: 28px;
+  margin-right: 12px;
 }
 

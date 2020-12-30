@@ -9,3 +9,10 @@ import request from '@/utils/request'
 export const login = params => {
 	return request.post('/login/cellphone', params)
 }
+
+/**
+ *  获取登录状态
+ */
+export const getLoginStatus = params => {
+	return request.post('/login/status', params)
+}

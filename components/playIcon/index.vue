@@ -1,6 +1,6 @@
 <template>
 	<view class='play-list relative' @click.stop="changePlaying">
-		<text :class="['iconfont',playing?'icon-playStop':'icon-playStart']"></text>
+		<text :class="['iconfont',playing?'icon-playStop':'icon-playStart']" style="font-size: 25px;"></text>
 	</view>
 </template>
 

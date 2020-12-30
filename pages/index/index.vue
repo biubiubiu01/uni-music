@@ -2,7 +2,7 @@
 	<view class="recommend-container ">
 		<view class="bg-gradual-orange">
 			<cu-custom bgColor="bg-gradual-orange">
-				<block slot="content">懂你的音乐</block>
+				<block slot="content">Uni Music</block>
 			</cu-custom>
 			<view class="cu-bar search">
 				<view class="search-form round">
@@ -57,7 +57,7 @@
 			</scroll-view>
 			<music-control v-if="playInfo" />
 		</view>
-
+       <login v-if="loginShow" @login="getLoginStatus"></login>
 	</view>
 </template>
 
@@ -66,10 +66,10 @@
 	import zyList from "./zy-list.vue"
 	import zySong from "./zy-song/index.vue"
 	import zySinger from "./zy-singer.vue"
+	import login from "../../components/login/index.vue"
 	export default {
 		data() {
 			return {
-				CustomBar: this.CustomBar,
 				swiperList: [],
 				recommendList: [],
 				dayRecommendList: [],
@@ -91,29 +91,36 @@
 					ico: 'maikefeng'
 				}],
 				reload: false,
+				loginShow:false
 			}
 		},
 		components: {
 			zyTitle,
 			zyList,
 			zySong,
-			zySinger
+			zySinger,
+			login
 		},
 		computed: {
 			playInfo() {
 				return this.$store.state.playInfo
 			}
 		},
-		onLoad() {
-			// this.$api.login({
-			// 	phone: 13297924279,
-			// 	password: '+qq123456789'
-			// }).then(res => {
-			// 	setTimeout(() => {
-			// 		this.getDayRecommendData()
-			// 		this.getDayRecommendMusicData()
-			// 	}, 2000)
-			// })
+		onShow(){
+			let that = this;
+						this.$api.getLoginStatus().then(res=>{
+							console.log(res);
+						}).catch(error=>{
+						   if(error.code=='301'&&error.msg=="需要登录"){
+								 setTimeout(()=>{
+									  this.loginShow=true
+								 },3000)					
+						   }
+						})
+		
+		},
+	
+		mounted(){
 			this.getData()
 		},
 		onPullDownRefresh() {
@@ -125,9 +132,17 @@
 			}, 500)
 		},
 		methods: {
+			
+			getLoginStatus(){
+				this.loginShow=false
+				this.$api.getLoginStatus().then(res=>{
+					this.getDayRecommendData()
+					this.getDayRecommendMusicData()
+				})
+			},
+			
+			
 			getData() {
-				this.getDayRecommendData()
-				this.getDayRecommendMusicData()
 				this.getBannerData()
 				this.getRecommendData()
 				this.getNewSongData()
@@ -152,13 +167,16 @@
 			},
 
 			//获取猜你喜欢歌曲
-			async getDayRecommendData() {
-				const data = await this.$api.getDayRecommendList()
-				if (this.reload) {
-					this.dayRecommendList = (data.recommend || []).slice(10, 19)
-					return
-				}
-				this.dayRecommendList = (data.recommend || []).slice(0, 9)
+			 getDayRecommendData() {
+				 this.$api.getDayRecommendList().then(res=>{
+					  const data =res;
+					  if (this.reload) {
+					  	this.dayRecommendList = (data.recommend || []).slice(10, 19)
+					  	return
+					  }
+					  this.dayRecommendList = (data.recommend || []).slice(0, 9)
+				 })
+				
 			},
 
 			//获取推荐歌单

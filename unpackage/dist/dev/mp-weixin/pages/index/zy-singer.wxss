@@ -24,22 +24,24 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.music-list-wrapper.data-v-0f76d6b4 {
+.music-list-wrapper.data-v-4dbd92e4 {
   width: 100%;
   white-space: nowrap;
 }
-.music-list-wrapper .singer-list-item.data-v-0f76d6b4 {
+.music-list-wrapper .singer-list-item.data-v-4dbd92e4 {
   width: 20%;
   margin: 0 6px;
   display: inline-block;
   overflow: hidden;
   position: relative;
-  border-radius: 7px;
+  -webkit-border-radius: 7px;
+          border-radius: 7px;
   text-align: center;
 }
-.music-list-wrapper .singer-list-item .music-singer-item-image.data-v-0f76d6b4 {
+.music-list-wrapper .singer-list-item .music-singer-item-image.data-v-4dbd92e4 {
   width: 70px;
   height: 70px;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
 

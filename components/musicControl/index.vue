@@ -46,7 +46,7 @@
 			z-index: 20;
 			width: 100%;
 			height: 110rpx;
-			bottom: 50px;
+			bottom:0;
 			border-top: 1px solid rgba(0, 0, 0, 0.33);
 			display: flex;
 			background: #fff;

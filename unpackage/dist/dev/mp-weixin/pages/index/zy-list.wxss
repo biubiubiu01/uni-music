@@ -24,17 +24,17 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.music-list-wrapper.data-v-268d4570 {
+.music-list-wrapper.data-v-2438d306 {
   white-space: nowrap;
 }
-.music-list-wrapper .list-item.data-v-268d4570 {
+.music-list-wrapper .list-item.data-v-2438d306 {
   width: 27.5%;
   margin: 0 6px;
   display: inline-block;
   overflow: hidden;
   position: relative;
 }
-.music-list-wrapper .list-item .hotCount.data-v-268d4570 {
+.music-list-wrapper .list-item .hotCount.data-v-2438d306 {
   position: absolute;
   width: 100%;
   height: 50px;
@@ -47,11 +47,12 @@
   background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.45), transparent);
   background-image: linear-gradient(rgba(0, 0, 0, 0.45), transparent);
 }
-.music-list-wrapper .list-item .list-item-image.data-v-268d4570 {
+.music-list-wrapper .list-item .list-item-image.data-v-2438d306 {
   height: 115px;
-  border-radius: 7px;
+  -webkit-border-radius: 7px;
+          border-radius: 7px;
 }
-.music-list-wrapper .list-item .list-item-text.data-v-268d4570 {
+.music-list-wrapper .list-item .list-item-text.data-v-2438d306 {
   height: 35px;
   width: 100%;
   padding-top: 2px;
@@ -63,7 +64,7 @@
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
-.music-list-wrapper .list-item .radioName.data-v-268d4570 {
+.music-list-wrapper .list-item .radioName.data-v-2438d306 {
   width: 100%;
   color: #fff;
   font-size: 12px;
