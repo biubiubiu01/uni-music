@@ -7882,9 +7882,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!***********************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/pages.json ***!
-  \***********************************************************/
+/*!*********************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/pages.json ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -7894,31 +7894,9 @@ module.exports = g;
 /* 5 */,
 /* 6 */,
 /* 7 */,
-/* 8 */
-/*!***************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/utils/cache.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.removeCache = exports.getCache = exports.setCache = void 0;var setCache = function setCache(key, data) {
-  uni.setStorageSync(key, data);
-};exports.setCache = setCache;
-
-var getCache = function getCache(key) {
-  return uni.getStorageSync(key);
-};exports.getCache = getCache;
-
-var removeCache = function removeCache(key) {
-  uni.removeStorageSync(key);
-};exports.removeCache = removeCache;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
+/* 8 */,
 /* 9 */,
-/* 10 */,
-/* 11 */
+/* 10 */
 /*!**********************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
   \**********************************************************************************************************/
@@ -8046,18 +8024,21 @@ function normalizeComponent (
 
 
 /***/ }),
-/* 12 */
-/*!***************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/store/index.js ***!
-  \***************************************************************/
+/* 11 */
+/*!*************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/store/index.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 13));
-var _cache = __webpack_require__(/*! @/utils/cache.js */ 8);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
+var _cache = __webpack_require__(/*! @/utils/cache.js */ 13);
 
+
+
+var _user = __webpack_require__(/*! @/api/modules/user.js */ 14);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 
 _vue.default.use(_vuex.default);
@@ -8073,7 +8054,8 @@ var store = new _vuex.default.Store({
       author: 'Beyond' },
     //当前播放歌曲的信息
     playing: false, //播放状态
-    userInfo: (0, _cache.getCache)('USER_INFO') || null },
+    userInfo: null,
+    cookie: (0, _cache.getCache)('COOKIE') || null },
 
   mutations: {
     SET_PLAYING: function SET_PLAYING(state, bool) {
@@ -8084,22 +8066,35 @@ var store = new _vuex.default.Store({
       (0, _cache.setCache)('PLAY_INFO', val);
     },
     SET_USERINFO: function SET_USERINFO(state, val) {
-      console.log(val);
       state.userInfo = val;
-      (0, _cache.setCache)('USER_INFO', val);
+    },
+    SET_COOKIE: function SET_COOKIE(state, cookie) {
+      state.cookie = cookie;
     } },
 
 
   actions: {
-    setUserInfo: function setUserInfo(_ref, userinfo) {var commit = _ref.commit;
-      commit('SET_USERINFO', userinfo);
+    login: function login(_ref,
+
+    userInfo) {var commit = _ref.commit;
+      return new Promise(function (resolve, reject) {
+        (0, _user.login)(userInfo).then(function (res) {
+          commit('SET_USERINFO', res.account);
+          (0, _cache.setCache)('COOKIE', res.cookie);
+          commit('SET_COOKIE', res.cookie);
+          resolve();
+        }).catch(function (err) {
+          console.log(err);
+          reject(err);
+        });
+      });
     } } });var _default =
 
 
 store;exports.default = _default;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
   \********************************************/
@@ -9211,119 +9206,71 @@ var index = {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 14 */
-/*!*************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/index.js ***!
-  \*************************************************************/
+/* 13 */
+/*!*************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/utils/cache.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var home = __webpack_require__(/*! ./modules/home */ 15);
-var user = __webpack_require__(/*! ./modules/user */ 17);
-var search = __webpack_require__(/*! ./modules/search */ 18);var _default = _objectSpread(_objectSpread(_objectSpread({},
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.removeCache = exports.getCache = exports.setCache = void 0;var setCache = function setCache(key, data) {
+  uni.setStorageSync(key, data);
+};exports.setCache = setCache;
 
+var getCache = function getCache(key) {
+  return uni.getStorageSync(key);
+};exports.getCache = getCache;
 
-home),
-user),
-search);exports.default = _default;
-
-/***/ }),
-/* 15 */
-/*!********************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/home.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.getHotSingerList = exports.getDayRecommendMusicList = exports.getDayRecommendList = exports.getRadioList = exports.getNewSongList = exports.getRecommendList = exports.getBanner = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-/**
-                                                                                                                                                                                                                                                                                                                                                                                                                                              *  首页的轮播图 banner
-                                                                                                                                                                                                                                                                                                                                                                                                                                              *  @param  {Number} 
-                                                                                                                                                                                                                                                                                                                                                                                                                                              *  @return {Array}
-                                                                                                                                                                                                                                                                                                                                                                                                                                              */
-var getBanner = function getBanner(params) {
-  var num = 0;
-  switch (uni.getSystemInfoSync().platform) {
-    case 'android':
-      num = 1;
-      break;
-    case 'ios':
-      num = 2;
-      break;
-    default:
-      break;}
-
-  return _request.default.get("/banner?type=".concat(num), params);
-};
-
-/**
-    *  首页 发现好歌单  list
-    *  @param  {Number} 
-    *  @return {Array}
-    */exports.getBanner = getBanner;
-var getRecommendList = function getRecommendList() {
-  return _request.default.post('/personalized', {
-    limit: 8 });
-
-};
-
-/**
-    *  首页 新歌 list
-    *  @return {Array}
-    */exports.getRecommendList = getRecommendList;
-var getNewSongList = function getNewSongList() {
-  return _request.default.get('/personalized/newsong');
-};
-
-/**
-    *  首页 精选电台
-    *  @return {Array}
-    */exports.getNewSongList = getNewSongList;
-var getRadioList = function getRadioList() {
-  return _request.default.get('/dj/recommend');
-};
-
-/**
-    *  首页 每日推荐歌曲 ---需要登录
-    *  @return {Array}
-    */exports.getRadioList = getRadioList;
-var getDayRecommendList = function getDayRecommendList() {
-  return _request.default.get('/recommend/songs');
-};
-
-/**
-    *  首页 每日推荐歌单 ---需要登录
-    *  @return {Array}
-    */exports.getDayRecommendList = getDayRecommendList;
-var getDayRecommendMusicList = function getDayRecommendMusicList() {
-  return _request.default.get('/recommend/resource');
-};
-
-/**
-    *  首页 热门歌手 ---需要登录
-    *  @return {Array}
-    */exports.getDayRecommendMusicList = getDayRecommendMusicList;
-var getHotSingerList = function getHotSingerList() {
-  return _request.default.post('/top/artists', {
-    offset: 0,
-    limit: 18 });
-
-};exports.getHotSingerList = getHotSingerList;
+var removeCache = function removeCache(key) {
+  uni.removeStorageSync(key);
+};exports.removeCache = removeCache;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 16 */
-/*!*****************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/utils/request.js ***!
-  \*****************************************************************/
+/* 14 */
+/*!******************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/user.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var baseURL = 'http://localhost:3000';
+Object.defineProperty(exports, "__esModule", { value: true });exports.getLoginStatus = exports.login = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+/**
+                                                                                                                                                                                                                                                                                            *  登录
+                                                                                                                                                                                                                                                                                            *  @param  {Number} phone 
+                                                                                                                                                                                                                                                                                            *  @param  {Number} password 
+                                                                                                                                                                                                                                                                                            *  @return {Array}
+                                                                                                                                                                                                                                                                                            */
+var login = function login(params) {
+  return _request.default.get('/login/cellphone', params);
+};
+
+/**
+    *  获取登录状态
+    */exports.login = login;
+var getLoginStatus = function getLoginStatus(params) {
+  return _request.default.get('/login/status', params);
+};exports.getLoginStatus = getLoginStatus;
+
+/***/ }),
+/* 15 */
+/*!***************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/utils/request.js ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _cache = __webpack_require__(/*! @/utils/cache.js */ 13);
+
+
+
+// const baseURL = 'https://musicapi.leanapp.cn';
+var baseURL = 'http://localhost:3000';
+
 
 var request = {
   get: function get(url, data) {
@@ -9334,8 +9281,9 @@ var request = {
         data: data,
         header: {
           'Accept': 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded' //自定义请求头信息
-        },
+          'Content-Type': 'application/x-www-form-urlencoded', //自定义请求头信息
+          'cookie': (0, _cache.getCache)('COOKIE') },
+
         method: "GET",
         success: function success(response) {
           var res = response.data;
@@ -9447,43 +9395,119 @@ request;exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 17 */
-/*!********************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/user.js ***!
-  \********************************************************************/
+/* 16 */
+/*!***********************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/index.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getLoginStatus = exports.login = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var home = __webpack_require__(/*! ./modules/home */ 17);
+var user = __webpack_require__(/*! ./modules/user */ 14);
+var search = __webpack_require__(/*! ./modules/search */ 18);var _default = _objectSpread(_objectSpread(_objectSpread({},
+
+
+home),
+user),
+search);exports.default = _default;
+
+/***/ }),
+/* 17 */
+/*!******************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/home.js ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.getHotSingerList = exports.getDayRecommendMusicList = exports.getDayRecommendList = exports.getRadioList = exports.getNewSongList = exports.getRecommendList = exports.getBanner = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /**
-                                                                                                                                                                                                                                                                                            *  登录
-                                                                                                                                                                                                                                                                                            *  @param  {Number} phone 
-                                                                                                                                                                                                                                                                                            *  @param  {Number} password 
-                                                                                                                                                                                                                                                                                            *  @return {Array}
-                                                                                                                                                                                                                                                                                            */
-var login = function login(params) {
-  return _request.default.post('/login/cellphone', params);
+                                                                                                                                                                                                                                                                                                                                                                                                                                              *  首页的轮播图 banner
+                                                                                                                                                                                                                                                                                                                                                                                                                                              *  @param  {Number} 
+                                                                                                                                                                                                                                                                                                                                                                                                                                              *  @return {Array}
+                                                                                                                                                                                                                                                                                                                                                                                                                                              */
+var getBanner = function getBanner(params) {
+  var num = 0;
+  switch (uni.getSystemInfoSync().platform) {
+    case 'android':
+      num = 1;
+      break;
+    case 'ios':
+      num = 2;
+      break;
+    default:
+      break;}
+
+  return _request.default.get("/banner?type=".concat(num), params);
 };
 
 /**
-    *  获取登录状态
-    */exports.login = login;
-var getLoginStatus = function getLoginStatus(params) {
-  return _request.default.post('/login/status', params);
-};exports.getLoginStatus = getLoginStatus;
+    *  首页 发现好歌单  list
+    *  @param  {Number} 
+    *  @return {Array}
+    */exports.getBanner = getBanner;
+var getRecommendList = function getRecommendList() {
+  return _request.default.post('/personalized', {
+    limit: 8 });
+
+};
+
+/**
+    *  首页 新歌 list
+    *  @return {Array}
+    */exports.getRecommendList = getRecommendList;
+var getNewSongList = function getNewSongList() {
+  return _request.default.get('/personalized/newsong');
+};
+
+/**
+    *  首页 精选电台
+    *  @return {Array}
+    */exports.getNewSongList = getNewSongList;
+var getRadioList = function getRadioList() {
+  return _request.default.get('/dj/recommend');
+};
+
+/**
+    *  首页 每日推荐歌曲 ---需要登录
+    *  @return {Array}
+    */exports.getRadioList = getRadioList;
+var getDayRecommendList = function getDayRecommendList() {
+  return _request.default.get('/recommend/songs');
+};
+
+/**
+    *  首页 每日推荐歌单 ---需要登录
+    *  @return {Array}
+    */exports.getDayRecommendList = getDayRecommendList;
+var getDayRecommendMusicList = function getDayRecommendMusicList() {
+  return _request.default.get('/recommend/resource');
+};
+
+/**
+    *  首页 热门歌手 ---需要登录
+    *  @return {Array}
+    */exports.getDayRecommendMusicList = getDayRecommendMusicList;
+var getHotSingerList = function getHotSingerList() {
+  return _request.default.post('/top/artists', {
+    offset: 0,
+    limit: 18 });
+
+};exports.getHotSingerList = getHotSingerList;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 18 */
-/*!**********************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/search.js ***!
-  \**********************************************************************/
+/*!********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/search.js ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getMusicUrl = exports.getDefaultSearch = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });exports.getMusicUrl = exports.getDefaultSearch = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /**
                                                                                                                                                                                                                                                                                                     *  搜索默认关键词

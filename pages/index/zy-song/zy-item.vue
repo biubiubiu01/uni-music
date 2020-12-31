@@ -1,6 +1,6 @@
 <template>
 	<view class="zy-song-item flex align-center" @click="addPlayed">
-		<image :src="(currentItem.picUrl||currentItem.album.picUrl)+'?param=60y60'" mode="scaleToFill" class="music-song-item-image"></image>
+		<image :src="imgUrl+'?param=60y60'" mode="scaleToFill" class="music-song-item-image"></image>
 		<view class="music-text">
 			<text class="music-song-item-name">{{currentItem.name}}</text>
 			<text class="music-song-item-author"> - {{author}}</text>
@@ -24,7 +24,23 @@
 				if (this.currentItem.song) {
 					return this.currentItem.song.artists[0].name
 				}
-				return this.currentItem.artists[0].name
+				if (this.currentItem.artists) {
+					return this.currentItem.artists[0].name
+				}
+				if (this.currentItem.ar) {
+					return this.currentItem.ar[0].name
+				}
+			},
+			imgUrl() {
+				if (this.currentItem.picUrl) {
+					return this.currentItem.picUrl
+				}
+				if (this.currentItem.album) {
+					return this.currentItem.album.picUrl
+				}
+				if (this.currentItem.al) {
+					return this.currentItem.al.picUrl
+				}
 			}
 		},
 		methods: {
@@ -33,7 +49,7 @@
 					url: '',
 					name: this.currentItem.name,
 					id: this.currentItem.id,
-					img1v1Url: (this.currentItem.picUrl || this.currentItem.album.picUrl) + '?param=60y60',
+					img1v1Url: this.imgUrl + '?param=60y60',
 					author: this.author
 				}
 				const data = await this.$api.getMusicUrl({

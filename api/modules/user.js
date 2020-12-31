@@ -7,12 +7,12 @@ import request from '@/utils/request'
  *  @return {Array}
  */
 export const login = params => {
-	return request.post('/login/cellphone', params)
+	return request.get('/login/cellphone', params)
 }
 
 /**
  *  获取登录状态
  */
 export const getLoginStatus = params => {
-	return request.post('/login/status', params)
+	return request.get('/login/status', params)
 }

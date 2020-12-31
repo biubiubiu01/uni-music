@@ -5,7 +5,6 @@
     "zy-title": "/pages/index/zy-title",
     "zy-list": "/pages/index/zy-list",
     "zy-song": "/pages/index/zy-song/index",
-    "zy-singer": "/pages/index/zy-singer",
-    "login": "/components/login/index"
+    "zy-singer": "/pages/index/zy-singer"
   }
 }

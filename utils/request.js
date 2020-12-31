@@ -1,7 +1,13 @@
-const baseURL = 'http://localhost:3000';
+import {
+	getCache
+} from "@/utils/cache.js"
+
+// const baseURL = 'https://musicapi.leanapp.cn';
+const baseURL = 'http://localhost:3000'
+
 
 const request = {
-	get(url, data ) {
+	get(url, data) {
 
 		return new Promise((resolve, reject) => {
 			uni.request({
@@ -10,6 +16,7 @@ const request = {
 				header: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/x-www-form-urlencoded', //自定义请求头信息
+					'cookie':getCache('COOKIE')
 				},
 				method: "GET",
 				success: (response) => {
@@ -33,7 +40,7 @@ const request = {
 		})
 
 	},
-	post(url, data ) {
+	post(url, data) {
 
 		return new Promise((resolve, reject) => {
 			uni.request({

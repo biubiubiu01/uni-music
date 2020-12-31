@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/my/index"
+    "pages/my/index",
+    "pages/login/index"
   ],
   "subPackages": [],
   "window": {
@@ -36,5 +37,5 @@
     "music-control": "/components/musicControl/index",
     "cu-custom": "/colorui/components/cu-custom"
   },
-  "sitemapLocation": "sitemap17.json"
+  "sitemapLocation": "sitemap16.json"
 }

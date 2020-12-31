@@ -57,7 +57,6 @@
 			</scroll-view>
 			<music-control v-if="playInfo" />
 		</view>
-       <login v-if="loginShow" @login="getLoginStatus"></login>
 	</view>
 </template>
 
@@ -66,7 +65,6 @@
 	import zyList from "./zy-list.vue"
 	import zySong from "./zy-song/index.vue"
 	import zySinger from "./zy-singer.vue"
-	import login from "../../components/login/index.vue"
 	export default {
 		data() {
 			return {
@@ -90,58 +88,55 @@
 					name: '热门歌手',
 					ico: 'maikefeng'
 				}],
-				reload: false,
-				loginShow:false
 			}
 		},
 		components: {
 			zyTitle,
 			zyList,
 			zySong,
-			zySinger,
-			login
+			zySinger
 		},
 		computed: {
 			playInfo() {
 				return this.$store.state.playInfo
+			},
+			isLogin() {
+				return this.$store.state.userInfo
 			}
 		},
-		onShow(){
-			let that = this;
-						this.$api.getLoginStatus().then(res=>{
-							console.log(res);
-						}).catch(error=>{
-						   if(error.code=='301'&&error.msg=="需要登录"){
-								 setTimeout(()=>{
-									  this.loginShow=true
-								 },3000)					
-						   }
-						})
-		
+		onShow() {
+			if (this.isLogin) {
+				this.getDayRecommendData()
+				this.getDayRecommendMusicData()
+			} else {
+				uni.showToast({
+					title: '未登录,请先登录',
+					icon: 'none',
+					duration: 3000,
+					complete: function() {
+						setTimeout(function() {
+							uni.navigateTo({
+								url: '../login/index',
+							});
+						}, 3000);
+					}
+				});
+			}
+
 		},
-	
-		mounted(){
+
+		mounted() {
 			this.getData()
 		},
 		onPullDownRefresh() {
-			this.reload = true;
 			this.getData()
+			this.getDayRecommendData()
+			this.getDayRecommendMusicData()
 			setTimeout(() => {
-				this.reload = false;
 				uni.stopPullDownRefresh();
 			}, 500)
 		},
 		methods: {
-			
-			getLoginStatus(){
-				this.loginShow=false
-				this.$api.getLoginStatus().then(res=>{
-					this.getDayRecommendData()
-					this.getDayRecommendMusicData()
-				})
-			},
-			
-			
 			getData() {
 				this.getBannerData()
 				this.getRecommendData()
@@ -159,43 +154,24 @@
 			//获取推荐歌单数据
 			async getRecommendData() {
 				const data = await this.$api.getRecommendList()
-				if (this.reload) {
-					this.recommendList = data.result.reverse()
-					return
-				}
 				this.recommendList = data.result || []
 			},
 
 			//获取猜你喜欢歌曲
-			 getDayRecommendData() {
-				 this.$api.getDayRecommendList().then(res=>{
-					  const data =res;
-					  if (this.reload) {
-					  	this.dayRecommendList = (data.recommend || []).slice(10, 19)
-					  	return
-					  }
-					  this.dayRecommendList = (data.recommend || []).slice(0, 9)
-				 })
-				
+			async getDayRecommendData() {
+				const {data} = await this.$api.getDayRecommendList()
+				this.dayRecommendList = data.dailySongs.slice(0,9)
 			},
 
 			//获取推荐歌单
 			async getDayRecommendMusicData() {
 				const data = await this.$api.getDayRecommendMusicList()
-				if (this.reload) {
-					this.dayRecommendMusicList = (data.recommend || []).reverse()
-					return
-				}
 				this.dayRecommendMusicList = data.recommend || []
 			},
 
 			//获取新歌数据
 			async getNewSongData() {
 				const data = await this.$api.getNewSongList()
-				if (this.reload) {
-					this.newSongList = data.result.slice(1, 10).reverse()
-					return
-				}
 				this.newSongList = data.result.slice(0, 9)
 			},
 

@@ -4,6 +4,9 @@ import {
 	getCache,
 	setCache
 } from "@/utils/cache.js"
+import {
+	login
+} from "@/api/modules/user.js"
 Vue.use(Vuex)
 
 
@@ -17,7 +20,8 @@ const store = new Vuex.Store({
 			author: 'Beyond'
 		}, //当前播放歌曲的信息
 		playing: false, //播放状态
-		userInfo: getCache('USER_INFO')||null
+		userInfo: null,
+		cookie: getCache('COOKIE') || null
 	},
 	mutations: {
 		SET_PLAYING(state, bool) {
@@ -27,16 +31,29 @@ const store = new Vuex.Store({
 			state.playInfo = val
 			setCache('PLAY_INFO', val)
 		},
-		SET_USERINFO(state,val){
-			console.log(val)
-			state.userInfo=val;
-			setCache('USER_INFO',val)
+		SET_USERINFO(state, val) {
+			state.userInfo = val;
+		},
+		SET_COOKIE(state, cookie) {
+			state.cookie = cookie
 		}
 
 	},
-	actions:{
-		setUserInfo({commit},userinfo){
-			commit('SET_USERINFO',userinfo)
+	actions: {
+		login({
+			commit
+		}, userInfo) {
+			return new Promise((resolve, reject) => {
+				login(userInfo).then(res => {
+					commit('SET_USERINFO',  res.account)
+					setCache('COOKIE',  res.cookie)
+					commit('SET_COOKIE',  res.cookie)
+					resolve()
+				}).catch(err => {
+					console.log(err)
+					reject(err)
+				})
+			})
 		}
 	}
 })
