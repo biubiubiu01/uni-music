@@ -10,13 +10,28 @@
 		{
 			"path": "pages/my/index",
 			"style": {
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"backgroundTextStyle": "dark"
 			}
-		}, {
+		}, 
+		{
 			"path": "pages/login/index",
 			"style": {
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark"
+			}
+		},
+		{
+			"path": "pages/search/index",
+			"style": {
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark"
+			}
+		},
+		{
+			"path": "pages/searchList/index",
+			"style": {
+				"enablePullDownRefresh": false,
 				"backgroundTextStyle": "dark"
 			}
 		}

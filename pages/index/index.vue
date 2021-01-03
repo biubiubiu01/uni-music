@@ -7,7 +7,7 @@
 			<view class="cu-bar search">
 				<view class="search-form round">
 					<text class="cuIcon-search"></text>
-					<input type="text" placeholder="搜索音乐 / 歌词" confirm-type="search" @input="searchIcon"></input>
+					<input type="text" placeholder="搜索音乐 / 歌词" confirm-type="search" @click="toSearch"></input>
 				</view>
 			</view>
 		</view>
@@ -55,7 +55,7 @@
 					<zy-list :currentList="radioList"></zy-list>
 				</view>
 			</scroll-view>
-			<music-control v-if="playInfo" />
+			<music-control  />
 		</view>
 	</view>
 </template>
@@ -97,15 +97,12 @@
 			zySinger
 		},
 		computed: {
-			playInfo() {
-				return this.$store.state.playInfo
-			},
-			isLogin() {
-				return this.$store.state.userInfo
+			cookie() {
+				return this.$store.state.cookie
 			}
 		},
 		onShow() {
-			if (this.isLogin) {
+			if (this.cookie) {
 				this.getDayRecommendData()
 				this.getDayRecommendMusicData()
 			} else {
@@ -187,6 +184,12 @@
 				const data = await this.$api.getRadioList()
 				this.radioList = data.djRadios || []
 			},
+			
+			toSearch(){
+				uni.navigateTo({
+					url: '../search/index',
+				});
+			}
 		}
 	}
 </script>

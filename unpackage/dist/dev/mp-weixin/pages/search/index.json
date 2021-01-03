@@ -1,0 +1,9 @@
+{
+  "enablePullDownRefresh": false,
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "history-search": "/pages/search/components/historySearch",
+    "hot-search": "/pages/search/components/hotSearch",
+    "search": "/components/search/index"
+  }
+}

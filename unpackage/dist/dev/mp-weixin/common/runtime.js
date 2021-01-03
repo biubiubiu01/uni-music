@@ -105,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/musicControl/index":1,"pages/index/zy-list":1,"pages/index/zy-singer":1,"pages/index/zy-song/index":1,"pages/index/zy-song/zy-item":1};
+/******/ 		var cssChunks = {"components/musicControl/index":1,"pages/index/zy-list":1,"pages/index/zy-singer":1,"pages/index/zy-song/index":1,"components/search/index":1,"pages/search/components/historySearch":1,"pages/search/components/hotSearch":1,"pages/index/zy-song/zy-item":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","components/musicControl/index":"components/musicControl/index","pages/index/zy-list":"pages/index/zy-list","pages/index/zy-singer":"pages/index/zy-singer","pages/index/zy-song/index":"pages/index/zy-song/index","pages/index/zy-title":"pages/index/zy-title","components/playIcon/index":"components/playIcon/index","pages/index/zy-song/zy-item":"pages/index/zy-song/zy-item"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"colorui/components/cu-custom":"colorui/components/cu-custom","components/musicControl/index":"components/musicControl/index","pages/index/zy-list":"pages/index/zy-list","pages/index/zy-singer":"pages/index/zy-singer","pages/index/zy-song/index":"pages/index/zy-song/index","pages/index/zy-title":"pages/index/zy-title","components/search/index":"components/search/index","pages/search/components/historySearch":"pages/search/components/historySearch","pages/search/components/hotSearch":"pages/search/components/hotSearch","components/playIcon/index":"components/playIcon/index","pages/index/zy-song/zy-item":"pages/index/zy-song/zy-item"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

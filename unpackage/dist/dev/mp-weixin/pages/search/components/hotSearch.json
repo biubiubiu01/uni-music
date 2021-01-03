@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "zy-title": "/pages/index/zy-title"
+  }
+}

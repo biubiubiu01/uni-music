@@ -21,7 +21,8 @@ const store = new Vuex.Store({
 		}, //当前播放歌曲的信息
 		playing: false, //播放状态
 		userInfo: null,
-		cookie: getCache('COOKIE') || null
+		cookie: getCache('COOKIE') || null,
+		historyList: getCache('HISTORY') || [],
 	},
 	mutations: {
 		SET_PLAYING(state, bool) {
@@ -36,6 +37,16 @@ const store = new Vuex.Store({
 		},
 		SET_COOKIE(state, cookie) {
 			state.cookie = cookie
+		},
+		SET_HISROTY(state,val){
+			if(state.historyList.indexOf(val)==-1){
+				state.historyList.unshift(val)
+				setCache('HISTORY', state.historyList)
+			}
+		},
+		CLEAR_HISTORY(state){
+			state.historyList=[]
+			setCache('HISTORY', [])
 		}
 
 	},
@@ -54,6 +65,12 @@ const store = new Vuex.Store({
 					reject(err)
 				})
 			})
+		},
+		addHistoryList({commit},val){
+			commit('SET_HISROTY',val)
+		},
+		clearHistoryList({commit}){
+			commit('CLEAR_HISTORY')
 		}
 	}
 })

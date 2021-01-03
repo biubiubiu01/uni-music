@@ -2,7 +2,9 @@
   "pages": [
     "pages/index/index",
     "pages/my/index",
-    "pages/login/index"
+    "pages/login/index",
+    "pages/search/index",
+    "pages/searchList/index"
   ],
   "subPackages": [],
   "window": {
@@ -37,5 +39,5 @@
     "music-control": "/components/musicControl/index",
     "cu-custom": "/colorui/components/cu-custom"
   },
-  "sitemapLocation": "sitemap16.json"
+  "sitemapLocation": "sitemap22.json"
 }

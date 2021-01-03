@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'iconfont';  /* project id 2078163 */
-  src: url('//at.alicdn.com/t/font_2078163_ntgcmj82tsl.eot');
-  src: url('//at.alicdn.com/t/font_2078163_ntgcmj82tsl.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_2078163_ntgcmj82tsl.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_2078163_ntgcmj82tsl.woff') format('woff'),
-  url('//at.alicdn.com/t/font_2078163_ntgcmj82tsl.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_2078163_ntgcmj82tsl.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_2078163_rnogkjacjeh.eot');
+  src: url('//at.alicdn.com/t/font_2078163_rnogkjacjeh.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2078163_rnogkjacjeh.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2078163_rnogkjacjeh.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2078163_rnogkjacjeh.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2078163_rnogkjacjeh.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -65,5 +65,9 @@
 
 .icon-playStop:before {
 	content: "\e685";
+}
+
+.icon-stop:before {
+	content: "\e669";
 }
 
