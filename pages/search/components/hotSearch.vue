@@ -27,7 +27,6 @@ export default {
 		//获取热门搜索详细列表
 		getDetailSearch() {
 			this.$api.getHotDetailSearch().then(res => {
-				console.log(res);
 				this.hotList = res.data || [];
 			});
 		},

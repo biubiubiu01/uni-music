@@ -32,12 +32,21 @@
   z-index: 20;
 }
 .suggestList.data-v-0f7112e6 {
-  background-color: #fff;
-  z-index: 99;
+  background-color: rgba(255, 255, 255, 0.1);
+  z-index: 25;
   position: fixed;
+  left: 0;
+  right: 0;
+  top: 210rpx;
+  bottom: 0;
+}
+.suggestList .suggestMain.data-v-0f7112e6 {
+  position: absolute;
   left: 25px;
   right: 25px;
-  top: 210rpx;
+  top: 0;
+  z-index: 30;
+  background-color: #fff;
   border: 1px solid #bebebe;
   -webkit-border-radius: 4px;
           border-radius: 4px;
@@ -46,9 +55,9 @@
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  padding: 0 20rpx;
+  padding: 0 25rpx;
 }
-.suggestList .suggest-item.data-v-0f7112e6 {
+.suggestList .suggestMain .suggest-item.data-v-0f7112e6 {
   padding: 24rpx 0;
   border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
   overflow: hidden;

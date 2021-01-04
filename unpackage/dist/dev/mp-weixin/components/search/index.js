@@ -77,6 +77,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+
+
+
 var _index = __webpack_require__(/*! @/utils/index.js */ 103); //
 //
 //
@@ -97,23 +100,22 @@ var _index = __webpack_require__(/*! @/utils/index.js */ 103); //
 //
 //
 //
+//
+//
+//
 var _default = { props: { text: { type: String, default: '' } }, data: function data() {return { keywords: '', defaultKeywords: '', debounceSuggest: null, suggestList: [], //搜索建议list
-      suggetShow: false };}, created: function created() {var _this = this;this.debounceSuggest = (0, _index.debounce)(function () {_this.getSuggestList();}, 250);this.getDefaultSearch();
-  },
-  methods: {
-    //获取默认搜索关键词
+      suggetShow: false };}, created: function created() {var _this = this;this.debounceSuggest = (0, _index.debounce)(function () {_this.getSuggestList();}, 250);this.getDefaultSearch();}, methods: { //获取默认搜索关键词
     getDefaultSearch: function getDefaultSearch() {var _this2 = this;
       this.$api.getDefaultSearch().then(function (res) {
         _this2.defaultKeywords = res.data.realkeyword || '';
       });
     },
 
-    //失去焦点
-    blurInput: function blurInput() {
+    //关闭搜索建议
+    handleClose: function handleClose() {
       this.suggestList = [];
       this.suggetShow = false;
     },
-
 
     //获取搜索建议
     getSuggestList: function getSuggestList() {var _this3 = this;
@@ -128,8 +130,6 @@ var _default = { props: { text: { type: String, default: '' } }, data: function 
 
     //点击搜索建议
     searchMusic: function searchMusic(val) {
-      console.log(val);
-      return;
       this.keywords = val;
       this.suggetShow = false;
       this.handleSearch();

@@ -143,7 +143,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     //获取热门搜索详细列表
     getDetailSearch: function getDetailSearch() {var _this = this;
       this.$api.getHotDetailSearch().then(function (res) {
-        console.log(res);
         _this.hotList = res.data || [];
       });
     },

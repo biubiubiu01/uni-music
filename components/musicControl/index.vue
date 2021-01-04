@@ -1,7 +1,7 @@
 <template>
-	<view class="radius shadow fotter-container" v-if="playInfo">
+	<view class="radius shadow fotter-container" v-if="playInfo" @click="toSongDetail">
 		<view class="fixed-container">
-			<view class="cu-avatar playImage round" :style="'background-image:url('+playInfo.img1v1Url+')'"></view>
+			<view class="cu-avatar playImage round" :style="'background-image:url('+playInfo.img1v1Url+'?param=60y60)'"></view>
 			<view class="play-center">
 				<view class="music-name">
 					{{playInfo.name}}
@@ -31,6 +31,13 @@
 		computed: {
 			playInfo() {
 				return this.$store.state.playInfo
+			}
+		},
+		methods:{
+			toSongDetail(){
+				uni.navigateTo({
+					url: '../song/index'
+				});
 			}
 		}
 	}

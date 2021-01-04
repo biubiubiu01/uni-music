@@ -6,7 +6,7 @@
 			<zy-title title="单曲" buttonName="播放" iconName="kaishi2" :right="true" className="searchTitle"></zy-title>
 			
 			<div class="music-item flex" v-for="item in musicList" :key="item.id" @click="handlePlayMusic(item)">
-				<image :src="item.al.picUrl" mode="" class="musicImg"></image>
+				<image :src="item.al.picUrl+'?param=60y60'" mode="" class="musicImg"></image>
 				<div class="rightInfo">
 					<div class="music-info">
 						<span style="color:rgb(86,124,166)">{{ item.name }}</span>
@@ -92,7 +92,7 @@ export default {
 				url: '',
 				name: val.name,
 				id: val.id,
-				img1v1Url: val.al.picUrl + '?param=60y60',
+				img1v1Url: val.al.picUrl,
 				author: val.ar[0].name
 			};
 			const data = await this.$api.getMusicUrl({

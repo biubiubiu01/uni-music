@@ -224,7 +224,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
                   url: '',
                   name: val.name,
                   id: val.id,
-                  img1v1Url: val.al.picUrl + '?param=60y60',
+                  img1v1Url: val.al.picUrl,
                   author: val.ar[0].name };_context.next = 6;return (
 
                   _this2.$api.getMusicUrl({

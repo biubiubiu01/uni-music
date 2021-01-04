@@ -173,7 +173,7 @@ var _default =
                   url: '',
                   name: _this.currentItem.name,
                   id: _this.currentItem.id,
-                  img1v1Url: _this.imgUrl + '?param=60y60',
+                  img1v1Url: _this.imgUrl,
                   author: _this.author };_context.next = 6;return (
 
                   _this.$api.getMusicUrl({

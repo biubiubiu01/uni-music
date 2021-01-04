@@ -57,7 +57,7 @@ export default {
 				url: '',
 				name: this.currentItem.name,
 				id: this.currentItem.id,
-				img1v1Url: this.imgUrl + '?param=60y60',
+				img1v1Url: this.imgUrl,
 				author: this.author
 			};
 			const data = await this.$api.getMusicUrl({
