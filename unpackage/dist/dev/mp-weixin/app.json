@@ -39,5 +39,6 @@
   "usingComponents": {
     "music-control": "/components/musicControl/index",
     "cu-custom": "/colorui/components/cu-custom"
-  }
+  },
+  "sitemapLocation": "sitemap72.json"
 }

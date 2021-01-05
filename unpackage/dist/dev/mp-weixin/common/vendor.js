@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1935,7 +1935,97 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ 103:
+/***/ 11:
+/*!***************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/uni-music/store/index.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
+var _cache = __webpack_require__(/*! @/utils/cache.js */ 13);
+
+
+
+var _user = __webpack_require__(/*! @/api/modules/user.js */ 14);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+_vue.default.use(_vuex.default);
+
+
+var store = new _vuex.default.Store({
+  state: {
+    playInfo: (0, _cache.getCache)('PLAY_INFO'),
+    playing: false, //播放状态
+    userInfo: null,
+    cookie: (0, _cache.getCache)('COOKIE'),
+    historyList: (0, _cache.getCache)('HISTORY') || [],
+    musicPlayInfo: (0, _cache.getCache)('MUSIC_PLAY') },
+
+  mutations: {
+    SET_PLAYING: function SET_PLAYING(state, bool) {
+      state.playing = bool;
+    },
+    SET_PLAYINFO: function SET_PLAYINFO(state, val) {
+      state.playInfo = val;
+      (0, _cache.setCache)('PLAY_INFO', val);
+    },
+    SET_USERINFO: function SET_USERINFO(state, val) {
+      state.userInfo = val;
+    },
+    SET_COOKIE: function SET_COOKIE(state, cookie) {
+      state.cookie = cookie;
+    },
+    SET_HISROTY: function SET_HISROTY(state, val) {
+      if (state.historyList.indexOf(val) == -1) {
+        state.historyList.unshift(val);
+        (0, _cache.setCache)('HISTORY', state.historyList);
+      }
+    },
+    CLEAR_HISTORY: function CLEAR_HISTORY(state) {
+      state.historyList = [];
+      (0, _cache.setCache)('HISTORY', []);
+    },
+    SET_MUSIC_PLAY: function SET_MUSIC_PLAY(state, player) {
+      state.musicPlayInfo = player;
+      (0, _cache.setCache)('MUSIC_PLAY', player);
+    } },
+
+
+  actions: {
+    login: function login(_ref,
+
+    userInfo) {var commit = _ref.commit;
+      return new Promise(function (resolve, reject) {
+        (0, _user.login)(userInfo).then(function (res) {
+          commit('SET_USERINFO', res.account);
+          (0, _cache.setCache)('COOKIE', res.cookie);
+          commit('SET_COOKIE', res.cookie);
+          resolve();
+        }).catch(function (err) {
+          console.log(err);
+          reject(err);
+        });
+      });
+    },
+    addHistoryList: function addHistoryList(_ref2, val) {var commit = _ref2.commit;
+      commit('SET_HISROTY', val);
+    },
+    clearHistoryList: function clearHistoryList(_ref3) {var commit = _ref3.commit;
+      commit('CLEAR_HISTORY');
+    },
+    setMusicPlay: function setMusicPlay(_ref4, player) {var commit = _ref4.commit;
+      commit('SET_MUSIC_PLAY', player);
+    } } });var _default =
+
+
+store;exports.default = _default;
+
+/***/ }),
+
+/***/ 111:
 /*!***************************************************************!*\
   !*** C:/Users/Administrator/Desktop/uni-music/utils/index.js ***!
   \***************************************************************/
@@ -1965,94 +2055,6 @@ function debounce(func, delay) {var immediate = arguments.length > 2 && argument
     }, delay);
   };
 }
-
-/***/ }),
-
-/***/ 11:
-/*!***************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/store/index.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
-var _cache = __webpack_require__(/*! @/utils/cache.js */ 13);
-
-
-
-var _user = __webpack_require__(/*! @/api/modules/user.js */ 14);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-
-_vue.default.use(_vuex.default);
-
-
-var store = new _vuex.default.Store({
-  state: {
-    playInfo: (0, _cache.getCache)('PLAY_INFO') || {
-      url: 'http://m7.music.126.net/20201228222935/1c324771ea3bda15e5bbee0e13e36d16/ymusic/76e5/ba34/d562/2e95d6640354faee9ef0d6a384d2bc5f.mp3',
-      name: '海阔天空',
-      id: 33894312,
-      img1v1Url: "https://p2.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
-      author: 'Beyond' },
-    //当前播放歌曲的信息
-    playing: false, //播放状态
-    userInfo: null,
-    cookie: (0, _cache.getCache)('COOKIE') || null,
-    historyList: (0, _cache.getCache)('HISTORY') || [] },
-
-  mutations: {
-    SET_PLAYING: function SET_PLAYING(state, bool) {
-      state.playing = bool;
-    },
-    SET_PLAYINFO: function SET_PLAYINFO(state, val) {
-      state.playInfo = val;
-      (0, _cache.setCache)('PLAY_INFO', val);
-    },
-    SET_USERINFO: function SET_USERINFO(state, val) {
-      state.userInfo = val;
-    },
-    SET_COOKIE: function SET_COOKIE(state, cookie) {
-      state.cookie = cookie;
-    },
-    SET_HISROTY: function SET_HISROTY(state, val) {
-      if (state.historyList.indexOf(val) == -1) {
-        state.historyList.unshift(val);
-        (0, _cache.setCache)('HISTORY', state.historyList);
-      }
-    },
-    CLEAR_HISTORY: function CLEAR_HISTORY(state) {
-      state.historyList = [];
-      (0, _cache.setCache)('HISTORY', []);
-    } },
-
-
-  actions: {
-    login: function login(_ref,
-
-    userInfo) {var commit = _ref.commit;
-      return new Promise(function (resolve, reject) {
-        (0, _user.login)(userInfo).then(function (res) {
-          commit('SET_USERINFO', res.account);
-          (0, _cache.setCache)('COOKIE', res.cookie);
-          commit('SET_COOKIE', res.cookie);
-          resolve();
-        }).catch(function (err) {
-          console.log(err);
-          reject(err);
-        });
-      });
-    },
-    addHistoryList: function addHistoryList(_ref2, val) {var commit = _ref2.commit;
-      commit('SET_HISROTY', val);
-    },
-    clearHistoryList: function clearHistoryList(_ref3) {var commit = _ref3.commit;
-      commit('CLEAR_HISTORY');
-    } } });var _default =
-
-
-store;exports.default = _default;
 
 /***/ }),
 
@@ -9056,7 +9058,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -9077,14 +9079,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -9170,7 +9172,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));

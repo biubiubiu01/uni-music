@@ -25,6 +25,7 @@ export default {
 			if (this.playInfo && this.playInfo.id) {
 				this.player = uni.createInnerAudioContext();
 				this.player.src = this.playInfo.url;
+				this.$store.dispatch('setMusicPlay',this.player)
 			}
 		},
 		changePlaying() {
