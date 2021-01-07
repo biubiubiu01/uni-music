@@ -17,7 +17,6 @@ const store = new Vuex.Store({
 		userInfo: null,
 		cookie: getCache('COOKIE'),
 		historyList: getCache('HISTORY') || [],
-		musicPlayInfo:getCache('MUSIC_PLAY')
 	},
 	mutations: {
 		SET_PLAYING(state, bool) {
@@ -42,10 +41,6 @@ const store = new Vuex.Store({
 		CLEAR_HISTORY(state){
 			state.historyList=[]
 			setCache('HISTORY', [])
-		},
-		SET_MUSIC_PLAY(state,player){
-			state.musicPlayInfo=player
-			setCache('MUSIC_PLAY', player)
 		}
 
 	},
@@ -70,10 +65,7 @@ const store = new Vuex.Store({
 		},
 		clearHistoryList({commit}){
 			commit('CLEAR_HISTORY')
-		},
-		setMusicPlay({commit},player){
-			commit('SET_MUSIC_PLAY',player)
-		},
+		}
 	}
 })
 export default store

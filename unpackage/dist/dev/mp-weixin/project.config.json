@@ -14,7 +14,7 @@
     "coverView": true,
     "nodeModules": false,
     "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
+    "showShadowRootInWxmlPanel": false,
     "scopeDataCheck": false,
     "uglifyFileName": false,
     "checkInvalidKey": true,
@@ -42,8 +42,6 @@
   "libVersion": "",
   "appid": "touristappid",
   "projectname": "listenMusic",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "list": []

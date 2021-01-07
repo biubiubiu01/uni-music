@@ -2,7 +2,6 @@ import {
 	getCache
 } from "@/utils/cache.js"
 
-// const baseURL = 'https://musicapi.leanapp.cn';
 const baseURL = 'http://localhost:3000'
 
 

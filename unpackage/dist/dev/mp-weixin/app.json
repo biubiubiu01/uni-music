@@ -5,7 +5,7 @@
     "pages/login/index",
     "pages/search/index",
     "pages/searchList/index",
-    "pages/song/index"
+    "pages/play/index"
   ],
   "subPackages": [],
   "window": {
@@ -39,6 +39,5 @@
   "usingComponents": {
     "music-control": "/components/musicControl/index",
     "cu-custom": "/colorui/components/cu-custom"
-  },
-  "sitemapLocation": "sitemap72.json"
+  }
 }

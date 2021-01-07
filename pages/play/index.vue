@@ -1,5 +1,5 @@
 <template>
-	<div class="song-container">
+	<div class="play-container">
 		<image :src="playInfo.img1v1Url" class="background-image"></image>
 		<cu-custom style="color:#fff" :isBack="true">
 			<block slot="content" class="musicName">{{ playInfo.name }}</block>
@@ -7,16 +7,31 @@
 		<view class="author">{{ playInfo.author }}</view>
 		<view class="img-container" :class="{ rotate: playing }"><image :src="playInfo.img1v1Url" class="authorImg"></image></view>
 		<view class="bottom-control">
-			<view class="progress"></view>
-			<view class="iconList"></view>
+			<view class="progress">
+				<view class="audio-number">{{ format(currentTime) }}</view>
+				<slider class="audio-slider" activeColor="#ff9700" block-size="8" :value="currentTime" :max="duration" @change="handleChange" @changing="slideChange"></slider>
+				<view class="audio-number">{{ format(duration) }}</view>
+			</view>
+			<view class="iconList flex">
+				<text class="iconfont icon-play-left"></text>
+				<text class="iconfont" :class="playing ? 'icon-play' : 'icon-pause'" style="font-size: 90rpx;margin: 0 35px;" @click="playMusic"></text>
+				<text class="iconfont icon-play-right"></text>
+			</view>
 		</view>
 	</div>
 </template>
 
 <script>
+import { debounce } from '@/utils/index.js';
 export default {
 	data() {
-		return {};
+		return {
+			duration: 0,
+			currentTime: 0,
+			seeking: false,
+			slideChange: null,
+			audio: uni.createInnerAudioContext()
+		};
 	},
 	computed: {
 		playInfo() {
@@ -24,20 +39,59 @@ export default {
 		},
 		playing() {
 			return this.$store.state.playing;
-		},
-		player(){
-			return this.$store.state.musicPlayInfo;
 		}
+	},
+	created() {
+		this.slideChange = debounce(e => {
+			this.handleChanging(e);
+		}, 50);
+		// this.onTimeUpdate();
+		// this.onEnded();
 	},
 	mounted() {
 		console.log(this.playInfo);
-		console.log(this.player);
+    	this.audio.src = this.playInfo.url;
+		this.audio.autoplay=true
+		this.audio.obeyMuteSwitch = false;
+		this.audio.onCanplay(()=>{
+			this.audio.duration;
+			setTimeout(()=>{
+				this.duration=this.audio.duration
+			},30)
+		})
+		//音频进度更新事件
+		this.audio.onTimeUpdate(() => {
+			if (!this.seeking) {
+				this.currentTime = this.audio.currentTime;
+			}
+
+		});		
+		
+
+	},
+	methods: {
+		format(num) {
+			return '0'.repeat(2 - String(Math.floor(num / 60)).length) + Math.floor(num / 60) + ':' + '0'.repeat(2 - String(Math.floor(num % 60)).length) + Math.floor(num % 60);
+		},
+		handleChanging(e) {
+			this.currentTime = e.detail.value;
+			this.seeking = true;
+		},
+		handleChange(e) {
+			this.audio.seek(e.detail.value)
+			this.audio.onSeeked(() => {
+				this.seeking = false
+			})
+		},
+		playMusic() {
+			this.$store.commit('SET_PLAYING', !this.playing);
+		}
 	}
 };
 </script>
 
 <style lang="scss" scoped>
-.song-container {
+.play-container {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -89,13 +143,33 @@ export default {
 	}
 	.bottom-control {
 		position: absolute;
-		bottom: 28%;
-		left: 25px;
-		right: 25px;
+		bottom: 10%;
+		left: 10px;
+		right: 10px;
 		.progress {
 			width: 100%;
+			display: flex;
+			align-items: center;
+			.audio-number {
+				width: 120upx;
+				font-size: 24upx;
+				line-height: 1;
+				color: #fff;
+				text-align: center;
+			}
+			.audio-slider {
+				flex: 1;
+				margin: 0;
+			}
 		}
 		.iconList {
+			justify-content: center;
+			align-items: center;
+			margin-top: 20px;
+			.iconfont {
+				color: #fff;
+				font-size: 48rpx;
+			}
 		}
 	}
 }

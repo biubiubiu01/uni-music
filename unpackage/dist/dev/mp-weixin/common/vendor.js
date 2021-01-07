@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1961,8 +1961,7 @@ var store = new _vuex.default.Store({
     playing: false, //播放状态
     userInfo: null,
     cookie: (0, _cache.getCache)('COOKIE'),
-    historyList: (0, _cache.getCache)('HISTORY') || [],
-    musicPlayInfo: (0, _cache.getCache)('MUSIC_PLAY') },
+    historyList: (0, _cache.getCache)('HISTORY') || [] },
 
   mutations: {
     SET_PLAYING: function SET_PLAYING(state, bool) {
@@ -1987,10 +1986,6 @@ var store = new _vuex.default.Store({
     CLEAR_HISTORY: function CLEAR_HISTORY(state) {
       state.historyList = [];
       (0, _cache.setCache)('HISTORY', []);
-    },
-    SET_MUSIC_PLAY: function SET_MUSIC_PLAY(state, player) {
-      state.musicPlayInfo = player;
-      (0, _cache.setCache)('MUSIC_PLAY', player);
     } },
 
 
@@ -2015,46 +2010,10 @@ var store = new _vuex.default.Store({
     },
     clearHistoryList: function clearHistoryList(_ref3) {var commit = _ref3.commit;
       commit('CLEAR_HISTORY');
-    },
-    setMusicPlay: function setMusicPlay(_ref4, player) {var commit = _ref4.commit;
-      commit('SET_MUSIC_PLAY', player);
     } } });var _default =
 
 
 store;exports.default = _default;
-
-/***/ }),
-
-/***/ 111:
-/*!***************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/utils/index.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.debounce = debounce; /**
-                                                                                                         * 函数防抖
-                                                                                                         * @param {Function} func
-                                                                                                         * @param {number} delay
-                                                                                                         * @return {*}
-                                                                                                         */
-
-function debounce(func, delay) {var immediate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-  var timer,
-  context = this;
-  return function () {for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
-    if (immediate) {
-      func.apply(context, args);
-      immediate = false;
-      return;
-    }
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      func.apply(context, args);
-    }, delay);
-  };
-}
 
 /***/ }),
 
@@ -3235,7 +3194,6 @@ var getLoginStatus = function getLoginStatus(params) {
 
 
 
-// const baseURL = 'https://musicapi.leanapp.cn';
 var baseURL = 'http://localhost:3000';
 
 
@@ -3529,6 +3487,43 @@ var getSearchList = function getSearchList(params) {
 var getMusicUrl = function getMusicUrl(params) {
   return _request.default.get('/song/url', params);
 };exports.getMusicUrl = getMusicUrl;
+
+/***/ }),
+
+/***/ 19:
+/*!***************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/uni-music/utils/audio.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.init = init;exports.play = play;exports.pause = pause;exports.audio = void 0;var audio = uni.createInnerAudioContext();exports.audio = audio;
+
+function init(option) {var
+
+  src =
+
+  option.src,_option$autoplay = option.autoplay,autoplay = _option$autoplay === void 0 ? true : _option$autoplay;
+  if (!src) {
+    uni.showToast({
+      title: "音频不存在",
+      icon: 'none',
+      duration: 2000 });
+
+  }
+  audio.autoplay = autoplay;
+  audio.src = src;
+}
+
+function play() {
+  audio.play();
+}
+
+function pause() {
+  audio.pause();
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
@@ -9058,7 +9053,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -9079,14 +9074,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -9172,7 +9167,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9579,18 +9574,18 @@ internalMixin(Vue);
 
 /***/ }),
 
-/***/ 25:
+/***/ 26:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 26);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 27);
 
 /***/ }),
 
-/***/ 26:
+/***/ 27:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -9621,7 +9616,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 27);
+module.exports = __webpack_require__(/*! ./runtime */ 28);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -9638,7 +9633,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 27:
+/***/ 28:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -10409,6 +10404,39 @@ module.exports = g;
 /***/ (function(module, exports) {
 
 
+
+/***/ }),
+
+/***/ 67:
+/*!***************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/uni-music/utils/index.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.debounce = debounce; /**
+                                                                                                         * 函数防抖
+                                                                                                         * @param {Function} func
+                                                                                                         * @param {number} delay
+                                                                                                         * @return {*}
+                                                                                                         */
+
+function debounce(func, delay) {var immediate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  var timer,
+  context = this;
+  return function () {for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
+    if (immediate) {
+      func.apply(context, args);
+      immediate = false;
+      return;
+    }
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      func.apply(context, args);
+    }, delay);
+  };
+}
 
 /***/ })
 

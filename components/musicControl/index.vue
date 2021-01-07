@@ -36,7 +36,7 @@
 		methods:{
 			toSongDetail(){
 				uni.navigateTo({
-					url: '../song/index'
+					url: '../play/index'
 				});
 			}
 		}

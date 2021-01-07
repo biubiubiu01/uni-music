@@ -23,35 +23,34 @@ export default {
 	methods: {
 		initPlay() {
 			if (this.playInfo && this.playInfo.id) {
-				this.player = uni.createInnerAudioContext();
-				this.player.src = this.playInfo.url;
-				this.$store.dispatch('setMusicPlay',this.player)
+				this.$audio.init({
+					src: this.playInfo.url
+				});
+				if (this.playing) {
+					this.$audio.play();
+				} else {
+					this.$audio.pause();
+				}
 			}
 		},
 		changePlaying() {
-			if (this.playing) {
-				this.player.pause();
-				this.$store.commit('SET_PLAYING', false);
-			} else {
-				this.player.play();
-				this.$store.commit('SET_PLAYING', true);
-			}
+			this.$store.commit('SET_PLAYING', !this.playing);
 		}
 	},
 	watch: {
 		playInfo: {
 			handler(nl, ol) {
-				this.player.destroy();
-				this.initPlay();
-				this.player.play();
+				this.$audio.init({
+					src: this.playInfo.url
+				});
 			},
 			deep: true
 		},
 		playing(nl, ol) {
 			if (nl) {
-				this.player.play();
+				this.$audio.play();
 			} else {
-				this.player.pause();
+				this.$audio.pause();
 			}
 		}
 	}

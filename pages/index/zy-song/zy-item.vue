@@ -49,8 +49,10 @@ export default {
 
 	methods: {
 		async addPlayed() {
-			if(this.playInfo.id==this.currentItem.id&&this.playing){
-				this.$store.commit('SET_PLAYING', false);
+			if(this.playInfo.id==this.currentItem.id){
+				uni.navigateTo({
+					url: '../play/index'
+				});
 				return
 			}
 			let played = {

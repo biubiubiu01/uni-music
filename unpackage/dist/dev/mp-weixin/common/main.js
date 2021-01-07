@@ -16,14 +16,28 @@ var _store = _interopRequireDefault(__webpack_require__(/*! ./store */ 11));
 
 
 
-var _index = _interopRequireDefault(__webpack_require__(/*! @/api/index */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}_vue.default.config.productionTip = false;_App.default.mpType = 'app';
-_vue.default.prototype.$api = _index.default;var musicControl = function musicControl() {__webpack_require__.e(/*! require.ensure | components/musicControl/index */ "components/musicControl/index").then((function () {return resolve(__webpack_require__(/*! @/components/musicControl/index.vue */ 68));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _index = _interopRequireDefault(__webpack_require__(/*! @/api/index */ 16));
 
 
-_vue.default.component('music-control', musicControl);var cuCustom = function cuCustom() {__webpack_require__.e(/*! require.ensure | colorui/components/cu-custom */ "colorui/components/cu-custom").then((function () {return resolve(__webpack_require__(/*! ./colorui/components/cu-custom.vue */ 75));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
-_vue.default.component('cu-custom', cuCustom);
+
+
+
+
+var _audio = __webpack_require__(/*! @/utils/audio.js */ 19);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}_vue.default.config.productionTip = false;_App.default.mpType = 'app';_vue.default.prototype.$api = _index.default;var musicControl = function musicControl() {__webpack_require__.e(/*! require.ensure | components/musicControl/index */ "components/musicControl/index").then((function () {return resolve(__webpack_require__(/*! @/components/musicControl/index.vue */ 70));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};_vue.default.component('music-control', musicControl);var cuCustom = function cuCustom() {__webpack_require__.e(/*! require.ensure | colorui/components/cu-custom */ "colorui/components/cu-custom").then((function () {return resolve(__webpack_require__(/*! ./colorui/components/cu-custom.vue */ 77));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};_vue.default.component('cu-custom', cuCustom);
+
+
+
+
+
+
+_vue.default.prototype.$audio = {
+  audio: _audio.audio,
+  init: _audio.init,
+  play: _audio.play,
+  pause: _audio.pause,
+  duration: _audio.duration };
 
 
 
