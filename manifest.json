@@ -92,11 +92,13 @@
     /* 小程序特有相关 */
     "mp-weixin" : {
         "appid" : "",
+		"requiredBackgroundModes": ["audio"],
         "setting" : {
             "urlCheck" : true,
-            "es6" : true,
+            "es6" : false,
             "postcss" : true,
-            "minified" : true
+            "minified" : true,
+			"requiredBackgroundModes": ["audio"]
         },
         "usingComponents" : true,
         "permission" : {}

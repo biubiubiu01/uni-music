@@ -32,9 +32,9 @@
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
-.musicList .loading.data-v-0a905fe2 {
-  text-align: center;
-  margin-top: 15px;
+.musicList .active.data-v-0a905fe2 {
+  background: #ff9700;
+  color: #fff;
 }
 .musicList .music-item.data-v-0a905fe2 {
   border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);

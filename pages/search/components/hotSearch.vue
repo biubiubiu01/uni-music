@@ -1,10 +1,10 @@
 <template>
 	<div class="hotSearch-container">
-		<zy-title title="热搜榜" buttonName="播放" iconName="kaishi2" :right="true" className="searchTitle"></zy-title>
+		<p style="font-weight: 600;font-size: 28rpx;margin-bottom: 10px;">热搜榜</p>
 		<div class="hotList">
 			<div class="hot-item flex" v-for="(item, index) in hotList" :key="index" :class="{ topThree: index <= 2 }" @click="handleClick(item.searchWord)">
 				<span class="index">{{ index + 1 }}</span>
-				<span>{{ item.searchWord }}</span>
+				<span class="searchLabel">{{ item.searchWord }}</span>
 				<image v-if="item.iconUrl" :src="item.iconUrl" mode="" class="iconImg" :class="item.iconType == 5 ? 'topImg' : 'hotImg'"></image>
 			</div>
 		</div>
@@ -12,14 +12,12 @@
 </template>
 
 <script>
-import zyTitle from '../../index/zy-title.vue';
 export default {
 	data() {
 		return {
 			hotList: []
 		};
 	},
-	components: { zyTitle },
 	created() {
 		this.getDetailSearch();
 	},
@@ -30,11 +28,11 @@ export default {
 				this.hotList = res.data || [];
 			});
 		},
-		
-		handleClick(val){
-			this.$store.dispatch('addHistoryList',val)
-			this.$emit('chooseMusic',val);
-		}
+
+		handleClick(val) {
+			this.$store.dispatch('addHistoryList', val);
+			this.$emit('chooseMusic', val);
+		},
 	}
 };
 </script>
@@ -66,6 +64,14 @@ export default {
 				width: 44rpx;
 				display: inline-block;
 			}
+			.searchLabel {
+				max-width: calc(100% - 125rpx);
+				display: inline-block;
+				white-space: nowrap;
+				vertical-align: middle;
+				overflow: hidden;
+				text-overflow:ellipsis;
+			}
 
 			.iconImg {
 				margin-left: 15rpx;
@@ -79,7 +85,6 @@ export default {
 				&.hotImg {
 					width: 60rpx;
 					height: 30rpx;
-					
 				}
 			}
 		}

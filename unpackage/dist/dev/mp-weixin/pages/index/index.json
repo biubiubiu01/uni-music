@@ -2,9 +2,8 @@
   "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark",
   "usingComponents": {
-    "zy-title": "/pages/index/zy-title",
-    "zy-list": "/pages/index/zy-list",
-    "zy-song": "/pages/index/zy-song/index",
-    "zy-singer": "/pages/index/zy-singer"
+    "song-list": "/pages/index/components/songList",
+    "music-list": "/pages/index/components/musicList",
+    "singer-list": "/pages/index/components/singerList"
   }
 }

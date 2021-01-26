@@ -50,3 +50,12 @@ export const getSearchList = (params) => {
 export const getMusicUrl = (params) => {
 	return request.get('/song/url', params)
 }
+
+/**
+ *  根据id去获取歌词
+ *  @param  {Number} id
+ *  @return {Array}
+ */
+export const getLyric = (params) => {
+	return request.get('/lyric', params)
+}

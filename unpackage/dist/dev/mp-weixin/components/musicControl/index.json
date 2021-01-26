@@ -1,6 +1,6 @@
 {
   "usingComponents": {
-    "play-icon": "/components/playIcon/index"
+    "play-list": "/components/musicControl/playList"
   },
   "component": true
 }

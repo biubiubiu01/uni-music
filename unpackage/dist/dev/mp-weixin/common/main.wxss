@@ -26,12 +26,12 @@
 /* 文章场景相关 */
 @font-face {
   font-family: 'iconfont';  /* project id 2078163 */
-  src: url('//at.alicdn.com/t/font_2078163_bqniszjxuxf.eot');
-  src: url('//at.alicdn.com/t/font_2078163_bqniszjxuxf.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_2078163_bqniszjxuxf.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_2078163_bqniszjxuxf.woff') format('woff'),
-  url('//at.alicdn.com/t/font_2078163_bqniszjxuxf.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_2078163_bqniszjxuxf.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_2078163_eact19qvfzf.eot');
+  src: url('//at.alicdn.com/t/font_2078163_eact19qvfzf.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2078163_eact19qvfzf.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2078163_eact19qvfzf.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2078163_eact19qvfzf.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2078163_eact19qvfzf.svg#iconfont') format('svg');
 }
 .iconfont {
 	font-family: "iconfont" !important;
@@ -92,6 +92,18 @@
 }
 .icon-pause:before {
 	content: "\e635";
+}
+.icon-xunhuan:before {
+	content: "\e617";
+}
+.icon-shoucang:before {
+	content: "\e60d";
+}
+.icon-like:before {
+	content: "\e6c8";
+}
+.icon-unlike:before {
+	content: "\e609";
 }
 /*
   ColorUi for uniApp  v2.1.6 | by 文晓港 2019-05-31 10:44:24
@@ -4758,7 +4770,7 @@ page {
   -webkit-border-radius: 25px;
           border-radius: 25px;
   color: #666;
-  padding: 3px 11px;
+  padding: 3px 8px;
   font-size: 26rpx;
 }
 .zy-title .icon-left-title {
@@ -4783,5 +4795,133 @@ page {
 }
 .searchTitle .title-wrapper {
   font-size: 28rpx;
+}
+.mask {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+.mask .album-cover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  -webkit-filter: blur(100rpx);
+          filter: blur(100rpx);
+}
+.mask .cover-mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.list-description {
+  width: 100%;
+  height: 35%;
+  position: relative;
+}
+.list-description .description-wrapper {
+  height: calc(100% - 60px);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 25px;
+}
+.list-description .description-wrapper .images {
+  width: 240rpx;
+  height: 240rpx;
+  -webkit-border-radius: 8px;
+          border-radius: 8px;
+}
+.list-description .description-wrapper .text {
+  width: calc(100% - 275rpx);
+  margin-left: 35rpx;
+  display: inline-block;
+  vertical-align: top;
+}
+.list-description .description-wrapper .text .title {
+  font-size: 32rpx;
+  color: #fff;
+}
+.list-description .description-wrapper .text .content {
+  margin: 13px 0;
+  color: #fff;
+}
+.list-description .description-wrapper .text .content .avatar {
+  width: 25px;
+  height: 25px;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.list-description .description-wrapper .text .description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  color: #c0c0c0;
+}
+.music-all-list {
+  margin-top: 35rpx;
+  padding: 0 20px;
+  height: calc(65% - 35rpx);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.music-all-list.hasControl {
+  height: calc(65% - 145rpx);
+}
+.music-all-list .music-title .playIcon {
+  margin-right: 15px;
+  font-size: 40rpx;
+  color: #ff9700;
+  vertical-align: middle;
+}
+.music-all-list .music-item {
+  border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px;
+  margin-top: 15px;
+  color: #858585;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.music-all-list .music-item .index {
+  display: inline-block;
+  width: 60rpx;
+}
+.music-all-list .music-item .musicImg {
+  width: 75rpx;
+  height: 75rpx;
+  -webkit-border-radius: 6px;
+          border-radius: 6px;
+  margin-right: 25rpx;
+}
+.music-all-list .music-item .rightInfo {
+  width: calc(100% - 160rpx);
+}
+.music-all-list .music-item .music-info {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+.loading {
+  text-align: center;
+  margin-top: 10px;
 }
 

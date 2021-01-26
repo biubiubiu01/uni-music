@@ -52,6 +52,14 @@
   width: 44rpx;
   display: inline-block;
 }
+.hotSearch-container .hotList .hot-item .searchLabel {
+  max-width: calc(100% - 125rpx);
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .hotSearch-container .hotList .hot-item .iconImg {
   margin-left: 15rpx;
   vertical-align: middle;

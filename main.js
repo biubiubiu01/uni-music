@@ -13,24 +13,14 @@ Vue.prototype.$api = api;
 import musicControl from "@/components/musicControl/index.vue"
 Vue.component('music-control', musicControl)
 
+import boxTitle from "@/components/boxTitle/index.vue"
+Vue.component('box-title', boxTitle)
+
 import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom', cuCustom)
 
-import {
-	audio,
-	init,
-	play,
-	pause,
-	duration
-} from "@/utils/audio.js"
-Vue.prototype.$audio = {
-	audio,
-	init,
-	play,
-	pause,
-	duration
-}
-
+import audio from "@/utils/audio.js"
+Vue.prototype.$audio = audio.audio
 
 
 const app = new Vue({

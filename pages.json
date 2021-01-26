@@ -6,13 +6,6 @@
 				"enablePullDownRefresh": true,
 				"backgroundTextStyle": "dark"
 			}
-		},
-		{
-			"path": "pages/my/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
 		}, 
 		{
 			"path": "pages/login/index",
@@ -41,6 +34,53 @@
 				"enablePullDownRefresh": false,
 				"backgroundTextStyle": "dark"
 			}
+		},
+		{
+			"path": "pages/songDetail/index",
+			"style": {
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark"
+			}
+		},
+		{
+			"path": "pages/dayRecommend/index",
+			"style": {
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark"
+			}
+		},
+		{
+			"path": "pages/songList/index",
+			"style": {
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark"
+			}
+		},{
+			"path": "pages/singer/index",
+			"style": {
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark"
+			}
+		},{
+			"path": "pages/rankList/index",
+			"style": {
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark"
+			}
+		},
+		{
+			"path": "pages/singerPlayList/index",
+			"style": {
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"enablePullDownRefresh": false,
+				"backgroundTextStyle": "dark"
+			}
 		}
 	],
 	"globalStyle": {
@@ -51,20 +91,20 @@
 		"backgroundColor": "#ffffff"
 	},
 	"tabBar": {
-		"color": "#7A7E83",
-		"selectedColor": "#ff9700",
-		"borderStyle": "black",
-		"backgroundColor": "#FFFFFF",
-		"list": [{
-			"pagePath": "pages/index/index",
-			"iconPath": "static/tabBar/recommend.png",
-			"selectedIconPath": "static/tabBar/recommendHL.png",
-			"text": "音乐"
-		}, {
-			"pagePath": "pages/my/index",
-			"iconPath": "static/tabBar/my.png",
-			"selectedIconPath": "static/tabBar/myHL.png",
-			"text": "我的"
-		}]
-	}
+			"color": "#7A7E83",
+			"selectedColor": "#ff9700",
+			"borderStyle": "black",
+			"backgroundColor": "#FFFFFF",
+			"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabBar/recommend.png",
+				"selectedIconPath": "static/tabBar/recommendHL.png",
+				"text": "音乐"
+			}, {
+				"pagePath": "pages/my/index",
+				"iconPath": "static/tabBar/my.png",
+				"selectedIconPath": "static/tabBar/myHL.png",
+				"text": "我的"
+			}]
+		}
 }

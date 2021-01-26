@@ -2,20 +2,27 @@ import {
 	getCache
 } from "@/utils/cache.js"
 
-const baseURL = 'http://localhost:3000'
+// const baseURL = 'http://localhost:3000'
+// const baseURL='http://api.jiaiqi.cn:521'
+const baseURL = 'https://autumnfish.cn'
+// const baseURL='https://api.klutz.cc'
+// const baseURL='https://tree.xingyuncm.cn'
+// https://aqueous-retreat-34523.herokuapp.com/
+
 
 
 const request = {
 	get(url, data) {
 
 		return new Promise((resolve, reject) => {
+
 			uni.request({
-				url: baseURL + url,
+				url: url == '/login/cellphone' ? 'https://api.klutz.cc/login/cellphone' : baseURL + url,
 				data: data,
 				header: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/x-www-form-urlencoded', //自定义请求头信息
-					'cookie':getCache('COOKIE')
+					'cookie': getCache('COOKIE')
 				},
 				method: "GET",
 				success: (response) => {

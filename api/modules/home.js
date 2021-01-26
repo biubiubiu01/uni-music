@@ -25,10 +25,8 @@ export const getBanner = (params) => {
  *  @param  {Number} 
  *  @return {Array}
  */
-export const getRecommendList = () => {
-	return request.post('/personalized', {
-		limit: 8
-	})
+export const getRecommendList = (params) => {
+	return request.post('/personalized', params)
 }
 
 /**
@@ -39,13 +37,6 @@ export const getNewSongList = () => {
 	return request.get('/personalized/newsong')
 }
 
-/**
- *  首页 精选电台
- *  @return {Array}
- */
-export const getRadioList = () => {
-	return request.get('/dj/recommend')
-}
 
 /**
  *  首页 每日推荐歌曲 ---需要登录
@@ -70,6 +61,21 @@ export const getDayRecommendMusicList = () => {
 export const getHotSingerList = () => {
 	return request.post('/top/artists', {
 		offset: 0,
-		limit :18
+		limit: 18
 	})
 }
+
+/**
+ *  网友精选歌单
+ *  @return {Array}
+ */
+export const getSelectionData = () => {
+	return request.get('/top/playlist', {
+		limit: 10,
+		order: 'hot'
+	})
+}
+
+
+
+

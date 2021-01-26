@@ -1,25 +1,20 @@
-export const audio = uni.createInnerAudioContext();
+// const audio = uni.createInnerAudioContext();
+// audio.obeyMuteSwitch = false;
 
-export function init(option) {
-	const {
-		src,
-		autoplay = true
-	} = option
-	if (!src) {
-		uni.showToast({
-			title: "音频不存在",
-			icon: 'none',
-			duration: 2000
-		})
-	}
-	audio.autoplay = autoplay;
-	audio.src = src
-}
+// audio.onPlay(() => {
+// 	console.log('开始播放了');
+// })
 
-export function play() {
-	audio.play();
-}
+// audio.onCanplay(() => {
+// 	console.log('播放开始获取时间');
+// 	audio.duration;
+// 	setTimeout(() => {
+// 		console.log(audio.duration);
+// 	}, 30)
+// })
 
-export function pause() {
-	audio.pause();
+const audio = uni.getBackgroundAudioManager();
+
+module.exports = {
+	audio
 }

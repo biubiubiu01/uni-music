@@ -27,6 +27,10 @@
 .fotter-container.data-v-cfcae314 {
   height: 110rpx;
   width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
 }
 .fotter-container .fixed-container.data-v-cfcae314 {
   position: fixed;
@@ -34,7 +38,7 @@
   width: 100%;
   height: 110rpx;
   bottom: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.33);
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -56,6 +60,7 @@
           flex-wrap: wrap;
   -webkit-align-content: center;
           align-content: center;
+  max-width: calc(100% - 300rpx);
 }
 .fotter-container .play-center .music-name.data-v-cfcae314 {
   color: #000;

@@ -11,8 +11,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="main-container">
-			<scroll-view scroll-y style="height: 100%;">
+			<scroll-view :style="{height:height}" class="main-container" scroll-y>
 				<view class="banner-wrapper">
 					<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000"
 					 duration="500" style="height: 158px;min-height: 158px;">
@@ -23,48 +22,51 @@
 				</view>
 
 				<view class="list-wrapper flex">
-					<view class="cu-item flex-sub list-item" v-for="(item,index) in listOption" :key="item.ico">
+					<view class="cu-item flex-sub list-item" v-for="(item,index) in listOption" :key="item.ico" @click="handleNative(item.url)">
 						<view :class="'iconfont list-ico page-icon-color icon-'+item.ico">
 						</view>
 						<text class="list-title">{{item.name}}</text>
 					</view>
 				</view>
+				<view class="music-wrapper" v-if="dayRecommendList.length>0">
+					<box-title title="猜你喜欢" buttonName="播放全部" iconName="kaishi2" @handlePlay="handlePlay('dayRecommendList')"></box-title>
+					<music-list :currentList="dayRecommendList"></music-list>
+				</view>
+				
+				
+				<view class="music-wrapper" v-if="dayRecommendMusicList.length>0">
+				    <box-title title="根据您的喜好生成的歌单" buttonName="查看更多" :right="true" iconName="kaishi2" @handlePlay="handleNative('../songList/index')"></box-title>
+					<song-list :currentList="dayRecommendMusicList"></song-list>
+				</view>
+				
+				<view class="music-wrapper">
+				   <box-title title="热门推荐歌单" buttonName="查看更多" iconName="kaishi2" :right="true"  @handlePlay="handleNative('../songList/index')"></box-title>
+					<song-list :currentList="recommendList"></song-list>
+				</view>
 
 				<view class="music-wrapper">
-					<zy-title title="为你精挑细选" buttonName="查看更多" iconName="right" :right="true"></zy-title>
-					<zy-list :currentList="recommendList"></zy-list>
-				</view>
-				<view class="music-wrapper" v-if="dayRecommendList.length>0">
-					<zy-title title="猜你喜欢" buttonName="播放全部" iconName="kaishi2"></zy-title>
-					<zy-song :currentList="dayRecommendList"></zy-song>
-				</view>
-				<view class="music-wrapper" v-if="dayRecommendMusicList.length>0">
-					<zy-title title="推荐歌单" buttonName="查看更多" iconName="right" :right="true"></zy-title>
-					<zy-list :currentList="dayRecommendMusicList"></zy-list>
+					<box-title title="新歌速递" buttonName="播放全部" iconName="kaishi2" @handlePlay="handlePlay('newSongList')"></box-title>
+					<music-list :currentList="newSongList"></music-list>
 				</view>
 				<view class="music-wrapper">
-					<zy-title title="新歌速递" buttonName="播放全部" iconName="kaishi2"></zy-title>
-					<zy-song :currentList="newSongList"></zy-song>
+					<box-title title="网友精选歌单" buttonName="查看更多" :right="true" iconName="kaishi2" @handlePlay="handleNative('../songList/index')"></box-title>
+					<song-list :currentList="selectData"></song-list>
 				</view>
 				<view class="music-wrapper">
-					<zy-title title="热门歌手" buttonName="查看更多" iconName="right" :right="true"></zy-title>
-					<zy-singer :currentList="hotSingerList"></zy-singer>
-				</view>
-				<view class="music-wrapper">
-					<zy-title title="精选电台" buttonName="查看更多" iconName="right" :right="true"></zy-title>
-					<zy-list :currentList="radioList"></zy-list>
+					<box-title title="热门歌手" buttonName="查看更多"iconName="kaishi2" :right="true" @handlePlay="handleNative('../singer/index')"></box-title>
+					<singer-list :currentList="hotSingerList"></singer-list>
 				</view>
 			</scroll-view>
-			<music-control  />
-		</view>
+
+		<music-control />
 	</view>
 </template>
 
 <script>
-	import zyTitle from "./zy-title.vue"
-	import zyList from "./zy-list.vue"
-	import zySong from "./zy-song/index.vue"
-	import zySinger from "./zy-singer.vue"
+	import songList from "./components/songList.vue"
+	import musicList from "./components/musicList.vue"
+	import singerList from "./components/singerList.vue"
+	import { getImage, getName } from '@/utils/index.js';
 	export default {
 		data() {
 			return {
@@ -74,31 +76,45 @@
 				dayRecommendMusicList: [],
 				newSongList: [],
 				hotSingerList: [],
-				radioList: [],
+				selectData:[],
 				listOption: [{
 					name: '每日推荐',
-					ico: 'xihuan'
+					ico: 'xihuan',
+					url:'../dayRecommend/index'
 				}, {
 					name: '推荐歌单',
-					ico: 'remen'
+					ico: 'remen',
+					url:'../songList/index'
 				}, {
 					name: '排行榜',
-					ico: 'paihang'
+					ico: 'paihang',
+					url:'../rankList/index'
 				}, {
 					name: '热门歌手',
-					ico: 'maikefeng'
+					ico: 'maikefeng',
+					url:'../singer/index'
 				}],
 			}
 		},
 		components: {
-			zyTitle,
-			zyList,
-			zySong,
-			zySinger
+			songList,
+			musicList,
+			singerList
 		},
 		computed: {
 			cookie() {
 				return this.$store.state.cookie
+			},
+			playInfo() {
+				return this.$store.state.playInfo
+			},
+			height(){
+				let height = this.CustomBar / (uni.upx2px(this.CustomBar) / this.CustomBar)+100
+				if(this.playInfo){
+					height+=110
+				}
+			     return `calc(100%  - ${height}rpx)`
+				
 			}
 		},
 		onShow() {
@@ -138,8 +154,27 @@
 				this.getBannerData()
 				this.getRecommendData()
 				this.getNewSongData()
+				this.getSelectionData()
 				this.getHotSingerData()
-				this.getRadioData()
+			},
+			
+			//播放全部 猜你喜欢
+			handlePlay(key){
+				let list=this[key].map(item=>{
+					return{
+						name: item.name,
+						id: item.id,
+						img1v1Url: getImage(item),
+						author: getName(item)
+					}
+				})
+				this.$store.dispatch('playAllMUsic',list)
+			},
+			
+			handleNative(val){
+				uni.navigateTo({
+					url: val,
+				});
 			},
 
 			// 获取轮播图数据
@@ -151,13 +186,13 @@
 			//获取推荐歌单数据
 			async getRecommendData() {
 				const data = await this.$api.getRecommendList()
-				this.recommendList = data.result || []
+				this.recommendList = data.result.slice(0,8)
 			},
 
 			//获取猜你喜欢歌曲
 			async getDayRecommendData() {
 				const {data} = await this.$api.getDayRecommendList()
-				this.dayRecommendList = data.dailySongs.slice(0,9)
+				this.dayRecommendList = data.dailySongs
 			},
 
 			//获取推荐歌单
@@ -171,6 +206,12 @@
 				const data = await this.$api.getNewSongList()
 				this.newSongList = data.result.slice(0, 9)
 			},
+			
+			//获取网友精选歌单
+			async getSelectionData(){
+				const data = await this.$api.getSelectionData()
+				this.selectData=data.playlists||[]
+			},
 
 			//获取热门歌手数据
 			async getHotSingerData() {
@@ -179,12 +220,6 @@
 
 			},
 
-			//获取电台数据
-			async getRadioData() {
-				const data = await this.$api.getRadioList()
-				this.radioList = data.djRadios || []
-			},
-			
 			toSearch(){
 				uni.navigateTo({
 					url: '../search/index',
@@ -200,7 +235,7 @@
 		height: 100%;
 
 		.main-container {
-			flex: 1;
+
 			position: relative;
 
 			.banner-wrapper {

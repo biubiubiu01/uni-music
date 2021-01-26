@@ -83,6 +83,7 @@
 				if(!this.keywords.trim()){
 				   this.keywords=this.defaultKeywords
 				} 
+				this.suggetShow=false
 				this.$store.dispatch('addHistoryList',this.keywords)
 				this.$emit('handleSearch',this.keywords)
 			}

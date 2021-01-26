@@ -1,1 +1,0 @@
-<view data-event-opts="{{[['tap',[['changePlaying',['$event']]]]]}}" class="play-list relative" catchtap="__e"><text class="{{['iconfont',playing?'icon-playStop':'icon-playStart']}}" style="font-size:25px;"></text></view>

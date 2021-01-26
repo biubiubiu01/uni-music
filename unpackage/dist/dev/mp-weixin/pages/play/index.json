@@ -1,5 +1,7 @@
 {
   "enablePullDownRefresh": false,
   "backgroundTextStyle": "dark",
-  "usingComponents": {}
+  "usingComponents": {
+    "play-list": "/components/musicControl/playList"
+  }
 }

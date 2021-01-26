@@ -1,11 +1,24 @@
 <template>
 	<div class="play-container">
-		<image :src="playInfo.img1v1Url" class="background-image"></image>
+		<div class="mask">
+			<div class="album-cover" :style="{ 'background-image': 'url(' + bgImg + ')' }"></div>
+			<div class="cover-mask" style="opacity:0.6;"></div>
+		</div>
 		<cu-custom style="color:#fff" :isBack="true">
 			<block slot="content" class="musicName">{{ playInfo.name }}</block>
 		</cu-custom>
-		<view class="author">{{ playInfo.author }}</view>
-		<view class="img-container" :class="{ rotate: playing }"><image :src="playInfo.img1v1Url" class="authorImg"></image></view>
+		<view class="author" :style="{ top: CustomBar + 'px' }">{{ playInfo.author }}</view>
+		<view class="img-container" :style="{ transform: 'translate(-50%, -50%) rotate(' + rotate + 'deg)' }" v-show="!lyricShow">
+			<image :src="bgImg" class="authorImg" @click="getLyric"></image>
+		</view>
+		<scroll-view scroll-y v-if="lyricShow" @click="lyricShow = false" :scroll-top="scrollTop" style="height: 60%;margin-top: 30px;">
+			<view v-if="lyricList.length > 0">
+				<view class="lyric-item" :class="{ active: index == currentLyricIndex }" v-for="(item, index) in lyricList" :key="index" style="text-align: center;">
+					{{ item.words }}
+				</view>
+			</view>
+			<p v-else class="noLyric">暂无歌词</p>
+		</scroll-view>
 		<view class="bottom-control">
 			<view class="progress">
 				<view class="audio-number">{{ format(currentTime) }}</view>
@@ -13,16 +26,20 @@
 				<view class="audio-number">{{ format(duration) }}</view>
 			</view>
 			<view class="iconList flex">
-				<text class="iconfont icon-play-left"></text>
+				<text class="iconfont" :class="likeList.indexOf(playInfo.id)!=-1?'icon-like lighIcon':'icon-unlike'" @click="likeMusic" style="margin-right: 65rpx;"></text>
+				<text class="iconfont icon-play-left" @click="handleChangePlay('prev')"></text>
 				<text class="iconfont" :class="playing ? 'icon-play' : 'icon-pause'" style="font-size: 90rpx;margin: 0 35px;" @click="playMusic"></text>
-				<text class="iconfont icon-play-right"></text>
+				<text class="iconfont icon-play-right" @click="handleChangePlay('next')"></text>
+				<text class="iconfont icon-liebiao" style="margin-left: 65rpx;font-size: 56rpx;" @click.stop="modelShow = true"></text>
 			</view>
 		</view>
+		<play-list :modelShow="modelShow" @handleClose="modelShow = false" @backHome="backHome"></play-list>
 	</div>
 </template>
 
 <script>
 import { debounce } from '@/utils/index.js';
+import playList from '../../components/musicControl/playList.vue';
 export default {
 	data() {
 		return {
@@ -30,63 +47,189 @@ export default {
 			currentTime: 0,
 			seeking: false,
 			slideChange: null,
-			audio: uni.createInnerAudioContext()
+			timer: null,
+			rotate: 0,
+			modelShow: false,
+			lyricShow: false,
+			lyricList: [],
+			scrollTop: 0,
+			currentLyricIndex: 0,
+			CustomBar: this.CustomBar,
+			audioSrc: '',
+			likeList:[]
 		};
 	},
+	components: { playList },
 	computed: {
 		playInfo() {
 			return this.$store.state.playInfo;
 		},
 		playing() {
 			return this.$store.state.playing;
+		},
+		playList() {
+			return this.$store.state.playList;
+		},
+		userInfo() {
+			return this.$store.state.userInfo;
+		},
+		bgImg() {
+			if (this.playInfo && this.playInfo.img1v1Url) {
+				return this.playInfo.img1v1Url;
+			}
+			return '';
 		}
 	},
 	created() {
 		this.slideChange = debounce(e => {
 			this.handleChanging(e);
-		}, 50);
-		// this.onTimeUpdate();
-		// this.onEnded();
+		}, 300);
 	},
-	mounted() {
-		console.log(this.playInfo);
-    	this.audio.src = this.playInfo.url;
-		this.audio.autoplay=true
-		this.audio.obeyMuteSwitch = false;
-		this.audio.onCanplay(()=>{
-			this.audio.duration;
-			setTimeout(()=>{
-				this.duration=this.audio.duration
-			},30)
-		})
-		//音频进度更新事件
-		this.audio.onTimeUpdate(() => {
+	onShow() {
+		if (this.playing) {
+			this.initRotate();
+		} else {
+			clearInterval(this.timer);
+		}
+		this.duration = this.$audio.duration || 0;
+		this.currentTime = this.$audio.currentTime || 0;
+		//音频更新
+		this.$audio.onTimeUpdate(() => {
 			if (!this.seeking) {
-				this.currentTime = this.audio.currentTime;
+				this.currentTime = this.$audio.currentTime;
+				for (var i = 0; i < this.lyricList.length - 1; i++) {
+					var prevTime = this.lyricList[i].time,
+						nextTime = this.lyricList[i + 1].time;
+					if (parseFloat(this.currentTime) > prevTime && parseFloat(this.currentTime) < nextTime) {
+						this.currentLyricIndex = i;
+						this.scrollTop = this.currentLyricIndex * 36;
+						return;
+					}
+				}
 			}
-
-		});		
-		
-
+		});
+		this.$audio.onPlay(() => {
+			this.audioSrc = this.$audio.src;
+		});
+		this.$audio.onPrev(() => {
+			if (this.playList.length == 1) {
+				return;
+			}
+			this.handleChangePlay('prev');
+		});
+		this.$audio.onNext(() => {
+			if (this.playList.length == 1) {
+				return;
+			}
+			this.handleChangePlay('next');
+		});
+		this.$audio.onEnded(() => {
+			if (this.playList.length == 1) {
+				this.$store.commit('SET_PLAYING', false);
+				clearInterval(this.timer);
+				return;
+			}
+			this.handleChangePlay('next');
+		});
+		this.getLikeData();
 	},
 	methods: {
+		//获取喜欢音乐列表
+		async getLikeData() {
+			const uid=this.userInfo.id
+			const timestamp=new Date().getTime();
+			const data=await this.$api.likeData({uid,timestamp})
+			this.$nextTick(()=>{
+				this.likeList=data.ids||[]
+			})
+		},
+
+		//喜欢或取消喜音乐
+		async likeMusic() {
+			let bool=false
+			if(this.likeList.indexOf(this.playInfo.id)==-1){
+				bool=true
+			}
+			const timestamp=new Date().getTime();
+			const data=await this.$api.likeMusic({id:this.playInfo.id,timestamp,like:bool})
+			this.getLikeData()
+		},
+		//拖动 中
+		handleChanging(e) {
+			this.seeking = true;
+			this.currentTime = e.detail.value;
+			for (var i = 0; i < this.lyricList.length - 1; i++) {
+				var prevTime = this.lyricList[i].time,
+					nextTime = this.lyricList[i + 1].time;
+				if (parseFloat(this.currentTime) > prevTime && parseFloat(this.currentTime) < nextTime) {
+					this.currentLyricIndex = i;
+					this.scrollTop = this.currentLyricIndex * 36;
+					return;
+				}
+			}
+		},
+		//拖动 完成
+		handleChange(e) {
+			this.$audio.seek(e.detail.value);
+			this.seeking = false;
+		},
+		//播放或暂停
+		playMusic() {
+			if (this.playing) {
+				this.$audio.pause();
+			} else {
+				this.$audio.play();
+			}
+			this.$store.commit('SET_PLAYING', !this.playing);
+		},
+
+		//旋转
+		initRotate() {
+			this.timer = setInterval(() => {
+				this.rotate += 9;
+			}, 1000);
+		},
+
+		//获取歌词
+		async getLyric() {
+			this.lyricShow = true;
+			let data = [];
+			if (this.playInfo.source) {
+				const songmid = this.playInfo.id;
+				const res = await this.$api.searchQQMusicLyric({ songmid });
+				data = (res.data.lyric || '').split('\n');
+			} else {
+				const id = this.playInfo.id;
+				const res = await this.$api.getLyric({ id });
+				data = (res.lrc.lyric || '').split('\n');
+			}
+			let arr = [];
+			data.forEach(item => {
+				var words = item.split(']');
+				var time = words[0].slice(1, 10);
+				arr.push({
+					time: (time.slice(0, 2) - 0) * 60 + (time.slice(3, 5) - 0) + (time.slice(6, 9) - 0) / 1000, //歌词时间转换为秒
+					words: words[1] ? words[1] : ''
+				});
+			});
+			this.lyricList = arr;
+		},
+		//格式化时间
 		format(num) {
 			return '0'.repeat(2 - String(Math.floor(num / 60)).length) + Math.floor(num / 60) + ':' + '0'.repeat(2 - String(Math.floor(num % 60)).length) + Math.floor(num % 60);
 		},
-		handleChanging(e) {
-			this.currentTime = e.detail.value;
-			this.seeking = true;
+
+		//切换歌曲  --上一首或下一首
+		handleChangePlay(val) {
+			this.$store.dispatch('changePlay', val);
 		},
-		handleChange(e) {
-			this.audio.seek(e.detail.value)
-			this.audio.onSeeked(() => {
-				this.seeking = false
+
+		backHome() {
+			uni.switchTab({
+			   url: '/pages/index/index'
 			})
-		},
-		playMusic() {
-			this.$store.commit('SET_PLAYING', !this.playing);
 		}
-	}
+	},
 };
 </script>
 
@@ -95,15 +238,23 @@ export default {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	background: url(data:image/gif;base64,R0lGODlhOASAB5EAABESF////////wAAACH5BAEHAAIALAAAAAA4BIAHAAL/hI+py+0Po5y02ouz3rz7D4biSJbmiabqyrbuC8fyTNf2jef6zvf+DwwKh8Si8YhMKpfMpvMJjUqn1Kr1is1qt9yu9wsOi8fksvmMTqvX7Lb7DY/L5/S6/Y7P6/f8vv8PGCg4SFhoeIiYqLjI2Oj4CBkpOUlZaXmJmam5ydnp+QkaKjpKWmp6ipqqusra6voKGys7S1tre4ubq7vL2+v7CxwsPExcbHyMnKy8zNzs/AwdLT1NXW19jZ2tvc3d7f0NHi4+Tl5ufo6err7O3u7+Dh8vP09fb3+Pn6+/z9/v/w8woMCBBAsaPIgwocKFDBs6fAgxosSJFCtavIgxo8aN/xw7evwIMqTIkSRLmjyJMqXKlSxbunwJM6bMmTRr2ryJM6fOnTx7+vwJNKjQoUSLGj2KNKnSpUybOn0KNarUqVSrWr2KNavWrVy7ev0KNqzYsWTLmj2LNq3atWzbun0LN67cuXTr2r2LN6/evXz7+v0LOLDgwYQLGz6MOLHixYwbO34MObLkyZQrW76MObPmzZw7e/4MOrTo0aRLmz6NOrXq1axbu34NO7bs2bRr276NO7fu3bx7+/4NPLjw4cSLGz+OPLny5cybO38OPbr06dSrW7+OPbv27dy7e/8OPrz48eTLmz+PPr369ezbu38PP778+fTr27+PP7/+/fz7+///D2CAAg5IYIEGHohgggouyGCDDj4IYYQSTkhhhRZeiGGGGm7IYYcefghiiCKOSGKJJp6IYooqrshiiy6+CGOMMs5IY4023ohjjjruyGOPPv4IZJBCDklkkUYeiWSSSi7JZJNOPglllFJOSWWVVl6JZZZabslll15+CWaYYo5JZplmnolmmmquyWabbr4JZ5xyzklnnXbeiWeeeu7JZ59+/glooIIOSmihhh6KaKKKLspoo44+Cmmkkk5KaaWWXopppppuymmnnn4Kaqiijkpqqaaeimqqqq7KaquuvgprrLLOSmuttt6Ka6667sprr77+Cmywwg5LbLHGHotsssr/Lstss84+C2200k5LbbXWXottttpuy2233n4Lbrjijktuueaei2666q7LbrvuvgtvvPLOS2+99t6Lb7767stvv/7+C3DAAg9McMEGH4xwwgovzHDDDj8MccQST0xxxRZfjHHGGm/McccefwxyyCKPTHLJJp+Mcsoqr8xyyy6/DHPMMs9Mc80234xzzjrvzHPPPv8MdNBCD0100UYfjXTSSi/NdNNOPw111FJPTXXVVl+NddZab811115/DXbYYo9Ndtlmn4122mqvzXbbbr8Nd9xyz0133XbfjXfeeu/Nd99+/w144IIPTnjhhh+OeOKKL854444/Dnnkkk9OeeWW/1+Oeeaab855555/Dnrooo9Oeummn4566qqvznrrrr8Oe+yyz0577bbfjnvuuu/Oe+++/w588MIPT3zxxh+PfPLKL898884/D3300k9PffXWX4999tpvz3333n8Pfvjij09++eafj3766q/Pfvvuvw9//PLPT3/99t+Pf/76789///7/D8AACnCABCygAQ+IwAQqcIEMbKADHwjBCEpwghSsoAUviMEManCDHOygBz8IwhCKcIQkLKEJT4jCFKpwhSxsoQtfCMMYynCGNKyhDW+IwxzqcIc87KEPfwjEIApxiEQsohGPiMQkKnGJTGyiE58IxShKcYpUrKIVr4jFLP9qcYtc7KIXvwjGMIpxjGQsoxnPiMY0qnGNbGyjG98IxzjKcY50rKMd74jHPOpxj3zsox//CMhACnKQhCykIQ+JyEQqcpGMbKQjHwnJSEpykpSspCUviclManKTnOykJz8JylCKcpSkLKUpT4nKVKpylaxspStfCctYynKWtKylLW+Jy1zqcpe87KUvfwnMYApzmMQspjGPicxkKnOZzGymM58JzWhKc5rUrKY1r4nNbGpzm9zspje/Cc5winOc5CynOc+JznSqc53sbKc73wnPeMpznvSspz3vic986nOf/OynP/8J0IAKdKAELahBD4rQhCp0oQxtqEMfCtGISnT/ohStqEUvitGManSjHO2oRz8K0pCKdKQkLalJT4rSlKp0pSxtqUtfCtOYynSmNK2pTW+K05zqdKc87alPfwrUoAp1qEQtqlGPitSkKnWpTG2qU58K1ahKdapUrapVr4rVrGp1q1ztqle/CtawinWsZC2rWc+K1rSqda1sbatb3wrXuMp1rnStq13vite86nWvfO2rX/8K2MAKdrCELaxhD4vYxCp2sYxtrGMfC9nISnaylK2sZS+L2cxqdrOc7axnPwva0Ip2tKQtrWlPi9rUqna1rG2ta18L29jKdra0ra1tb4vb3Op2t7ztrW9/C9zgCne4xC2ucY+L3OQqd7nM/22uc58L3ehKd7rUra51r4vd7Gp3u9ztrne/C97wine85C2vec+L3vSqd73sba973wvf+Mp3vvStr33vi9/86ne//O2vf/8L4AALeMAELrCBD4zgBCt4wQxusIMfDOEIS3jCFK6whS+M4QxreMMc7rCHPwziEIt4xCQusYlPjOIUq3jFLG6xi18M4xjLeMY0rrGNb4zjHOt4xzzusY9/DOQgC3nIRC6ykY+M5CQreclMbrKTnwzlKEt5ylSuspWvjOUsa3nLXO6yl78M5jCLecxkLrOZz4zmNKt5zWxus5vfDOc4y3nOdK6zne+M5zzrec987rOf/wzoQAt60IQutP+hD43oRCt60YxutKMfDelIS3rSlK60pS+N6UxretOc7rSnPw3qUIt61KQutalPjepUq3rVrG61q18N61jLeta0rrWtb43rXOt617zuta9/DexgC3vYxC62sY+N7GQre9nMbraznw3taEt72tSutrWvje1sa3vb3O62t78N7nCLe9zkLre5z43udKt73exut7vfDe94y3ve9K63ve+N73zre9/87re//w3wgAt84AQvuMEPjvCEK3zhDG+4wx8O8YhLfOIUr7jFL47xjGt84xzvuMc/DvKQi3zkJC+5yU+O8pSrfOUsb7nLXw7zmMt85jSvuc1vjvOc63znPO+5z3/9DvSgC33oRC+60Y+O9KQrfelMb7rTnw71qEt96lSvutWvjvWsa33rXO+6178O9rCLfexkL7vZz472tKt97Wxvu9vfDve4y33udK+73e+O97zrfe9877vf/w74wAt+8IQvvOEPj/jEK37xjG+84x8P+chLfvKUr7zlL4/5zGt+85zvvOc/D/rQi370pC+96U+P+tSrfvWsb73rXw/72Mt+9rSvve1vj/vc6373vO+9738P/OALf/jEL77xj4/85Ct/+cxvvvOfD/3oS3/61K++9a+P/exrf/vc7773vw/+8It//OQvv/nPj/70q3/97G+/+98P//jLf/70r7/97wRv+wIAADs=);
-	background-size: 100% 100%;
-	.background-image {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		filter: blur(75px);
-		z-index: 0;
-		transform: scale(1.5);
+	.lighIcon{
+		color: #ff9700 !important;
+	}
+	.lyric-item {
+		color: #fcf7e9;
+		height: 40px;
+		line-height: 40px;
+		&.active {
+			color: #ff9700;
+		}
+	}
+	.noLyric {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		color: #fff;
+		transform: translate(-50%, -50%);
 	}
 	.musicName {
 		overflow: hidden;
@@ -128,6 +279,7 @@ export default {
 		background-size: 100% 100%;
 		border-radius: 50%;
 		border: 2px solid rgba(255, 255, 255, 0.3);
+		transition: all 1s linear;
 		.authorImg {
 			border-radius: 50%;
 			width: 315rpx;
@@ -136,9 +288,6 @@ export default {
 			left: 50%;
 			top: 50%;
 			transform: translate(-50%, -50%);
-		}
-		&.rotate {
-			animation: rotate 40s linear infinite;
 		}
 	}
 	.bottom-control {
@@ -165,21 +314,12 @@ export default {
 		.iconList {
 			justify-content: center;
 			align-items: center;
-			margin-top: 20px;
+			margin-top: 26rpx;
 			.iconfont {
 				color: #fff;
 				font-size: 48rpx;
 			}
 		}
-	}
-}
-
-@keyframes rotate {
-	0% {
-		transform: translate(-50%, -50%) rotate(0);
-	}
-	100% {
-		transform: translate(-50%, -50%) rotate(360deg);
 	}
 }
 </style>

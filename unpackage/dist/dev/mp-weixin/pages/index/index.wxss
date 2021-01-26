@@ -29,9 +29,6 @@
   height: 100%;
 }
 .recommend-container .main-container.data-v-57280228 {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
   position: relative;
 }
 .recommend-container .main-container .banner-wrapper.data-v-57280228 {
