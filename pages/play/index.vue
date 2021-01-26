@@ -26,7 +26,7 @@
 				<view class="audio-number">{{ format(duration) }}</view>
 			</view>
 			<view class="iconList flex">
-				<text class="iconfont" :class="likeList.indexOf(playInfo.id)!=-1?'icon-like lighIcon':'icon-unlike'" @click="likeMusic" style="margin-right: 65rpx;"></text>
+				<text class="iconfont" :class="likeList.indexOf(playInfo.id) != -1 ? 'icon-like lighIcon' : 'icon-unlike'" @click="likeMusic" style="margin-right: 65rpx;"></text>
 				<text class="iconfont icon-play-left" @click="handleChangePlay('prev')"></text>
 				<text class="iconfont" :class="playing ? 'icon-play' : 'icon-pause'" style="font-size: 90rpx;margin: 0 35px;" @click="playMusic"></text>
 				<text class="iconfont icon-play-right" @click="handleChangePlay('next')"></text>
@@ -56,7 +56,7 @@ export default {
 			currentLyricIndex: 0,
 			CustomBar: this.CustomBar,
 			audioSrc: '',
-			likeList:[]
+			likeList: []
 		};
 	},
 	components: { playList },
@@ -136,23 +136,23 @@ export default {
 	methods: {
 		//获取喜欢音乐列表
 		async getLikeData() {
-			const uid=this.userInfo.id
-			const timestamp=new Date().getTime();
-			const data=await this.$api.likeData({uid,timestamp})
-			this.$nextTick(()=>{
-				this.likeList=data.ids||[]
-			})
+			const uid = this.userInfo.id;
+			const timestamp = new Date().getTime();
+			const data = await this.$api.likeData({ uid, timestamp });
+			this.$nextTick(() => {
+				this.likeList = data.ids || [];
+			});
 		},
 
 		//喜欢或取消喜音乐
 		async likeMusic() {
-			let bool=false
-			if(this.likeList.indexOf(this.playInfo.id)==-1){
-				bool=true
+			let bool = false;
+			if (this.likeList.indexOf(this.playInfo.id) == -1) {
+				bool = true;
 			}
-			const timestamp=new Date().getTime();
-			const data=await this.$api.likeMusic({id:this.playInfo.id,timestamp,like:bool})
-			this.getLikeData()
+			const timestamp = new Date().getTime();
+			const data = await this.$api.likeMusic({ id: this.playInfo.id, timestamp, like: bool });
+			this.getLikeData();
 		},
 		//拖动 中
 		handleChanging(e) {
@@ -177,8 +177,10 @@ export default {
 		playMusic() {
 			if (this.playing) {
 				this.$audio.pause();
+				clearInterval(this.timer);
 			} else {
 				this.$audio.play();
+				this.initRotate();
 			}
 			this.$store.commit('SET_PLAYING', !this.playing);
 		},
@@ -226,10 +228,10 @@ export default {
 
 		backHome() {
 			uni.switchTab({
-			   url: '/pages/index/index'
-			})
+				url: '/pages/index/index'
+			});
 		}
-	},
+	}
 };
 </script>
 
@@ -238,7 +240,7 @@ export default {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	.lighIcon{
+	.lighIcon {
 		color: #ff9700 !important;
 	}
 	.lyric-item {

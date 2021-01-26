@@ -157,8 +157,8 @@ var _default =
       if (this.loading) return;
       var that = this;
       var userInfo = {
-        phone: 13297924279,
-        password: '+qq123456789' };
+        phone: 'xxxxxxxxx',
+        password: 'xxxxxxx' };
 
       that.loading = true;
       that.$store.dispatch('login', userInfo).then(function (token) {

@@ -50,7 +50,7 @@ export function getImage(val) {
 	} else if (val.al) {
 		img = val.al.picUrl;
 	}
-	return img?img + '?param=60y60':null;
+	return img?img + '?param=300y300':null;
 }
 
 /**
