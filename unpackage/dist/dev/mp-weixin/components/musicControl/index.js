@@ -259,7 +259,12 @@ __webpack_require__.r(__webpack_exports__);
     playInfo: {
       handler: function handler(nl, ol) {
         if (nl && nl.id) {
-          this.checkMusic();
+          if (!nl.source) {
+            this.checkMusic();
+          } else {
+            this.initPlay();
+          }
+
         } else {
           this.modelShow = false;
         }

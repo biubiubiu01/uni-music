@@ -137,7 +137,12 @@
 			playInfo: {
 				handler(nl, ol) {
 					if (nl && nl.id) {
-						this.checkMusic()
+						if(!nl.source){
+							this.checkMusic()
+						}else{
+							this.initPlay()
+						}
+						
 					} else {
 						this.modelShow = false
 					}
