@@ -58,7 +58,7 @@ export default {
 			audioSrc: '',
 			likeList: []
 		};
-	},
+slideChange	},
 	components: { playList },
 	computed: {
 		playInfo() {

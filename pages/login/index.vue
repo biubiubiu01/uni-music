@@ -25,8 +25,8 @@ export default {
 			if (this.loading) return;
 			let that = this;
 			const userInfo = {
-				phone: 'xxxxxxxxx',
-				password: 'xxxxxxx'
+				phone: '13297924279',
+				password: '+qq123456789'
 			};
 			that.loading = true;
 			that.$store.dispatch('login', userInfo).then(token => {

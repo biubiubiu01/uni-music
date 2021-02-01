@@ -15,7 +15,6 @@ const request = {
 	get(url, data) {
 
 		return new Promise((resolve, reject) => {
-
 			uni.request({
 				url: url == '/login/cellphone' ? 'https://api.klutz.cc/login/cellphone' : baseURL + url,
 				data: data,
@@ -27,7 +26,7 @@ const request = {
 				method: "GET",
 				success: (response) => {
 					let res = response.data
-					if (res.code === 200) {
+					if (res.code === 200||url=='/check/music') {
 						resolve(res)
 					} else {
 						reject(res)

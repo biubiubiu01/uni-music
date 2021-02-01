@@ -904,7 +904,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7331,7 +7331,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7352,14 +7352,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7445,7 +7445,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_NAME":"listenMusic","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7882,9 +7882,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!***********************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/pages.json ***!
-  \***********************************************************/
+/*!*********************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/pages.json ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -8025,9 +8025,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 11 */
-/*!***************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/store/index.js ***!
-  \***************************************************************/
+/*!*************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/store/index.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8036,14 +8036,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));
 var _audio = _interopRequireDefault(__webpack_require__(/*! @/utils/audio.js */ 13));
 var _cache = __webpack_require__(/*! @/utils/cache.js */ 14);
-
-
-
 var _user = __webpack_require__(/*! @/api/modules/user.js */ 15);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-
 _vue.default.use(_vuex.default);
-
 
 var store = new _vuex.default.Store({
   state: {
@@ -8091,65 +8085,58 @@ var store = new _vuex.default.Store({
         this.commit('SET_PLAYING', false);
         this.commit('SET_PLAYINFO', null);
       }
-
     },
 
     //添加歌曲到播放列表
     ADD_MUSIC_PLAY: function ADD_MUSIC_PLAY(state, list) {
       var index = state.playList.findIndex(function (item) {return item.id == list.id;});
       if (index == -1) {
-        state.playList.push(list);
-        (0, _cache.setCache)('PLAY_LIST', state.playList);
+        if (state.playInfo) {
+          var temp = state.playList.findIndex(
+          function (item) {return item.id == state.playInfo.id;});
+
+          state.playList.splice(temp, 0, list);
+          (0, _cache.setCache)('PLAY_LIST', state.playList);
+        }
       }
     } },
 
-
-
-
   actions: {
-    login: function login(_ref,
-
-    userInfo) {var commit = _ref.commit;
+    login: function login(_ref, userInfo) {var commit = _ref.commit;
       return new Promise(function (resolve, reject) {
-        (0, _user.login)(userInfo).then(function (res) {
+        (0, _user.login)(userInfo).
+        then(function (res) {
           commit('SET_USERINFO', res.account);
           (0, _cache.setCache)('COOKIE', res.cookie);
           commit('SET_COOKIE', res.cookie);
           resolve();
-        }).catch(function (err) {
+        }).
+        catch(function (err) {
           console.log(err);
           reject(err);
         });
       });
     },
-    addHistoryList: function addHistoryList(_ref2,
-
-    val) {var commit = _ref2.commit;
+    addHistoryList: function addHistoryList(_ref2, val) {var commit = _ref2.commit;
       commit('SET_HISROTY', val);
     },
-    clearHistoryList: function clearHistoryList(_ref3)
-
-    {var commit = _ref3.commit;
+    clearHistoryList: function clearHistoryList(_ref3) {var commit = _ref3.commit;
       commit('CLEAR_HISTORY');
     },
 
     //播放全部
-    playAllMUsic: function playAllMUsic(_ref4,
-
-
-    list) {var state = _ref4.state,commit = _ref4.commit;
+    playAllMUsic: function playAllMUsic(_ref4, list) {var state = _ref4.state,commit = _ref4.commit;
       state.playList = list;
       commit('SET_PLAYING', true);
       commit('SET_PLAYINFO', list[0]);
-      (0, _cache.setCache)('PLAY_LIST', state.playList);
+      (0, _cache.setCache)('PLAY_LIST', list);
     },
 
     //切换歌曲  上一首或者下一首
-    changePlay: function changePlay(_ref5,
+    changePlay: function changePlay(_ref5, status) {var state = _ref5.state,commit = _ref5.commit;
+      var index = state.playList.findIndex(
+      function (item) {return item.id == state.playInfo.id;});
 
-
-    status) {var state = _ref5.state,commit = _ref5.commit;
-      var index = state.playList.findIndex(function (item) {return item.id == state.playInfo.id;});
       if (index != -1) {
         var temp = -1;
         if (status == 'next') {
@@ -8158,7 +8145,6 @@ var store = new _vuex.default.Store({
           } else {
             temp = index + 1;
           }
-
         } else {
           if (index == 0) {
             temp = state.playList.length - 1;
@@ -8172,15 +8158,11 @@ var store = new _vuex.default.Store({
     },
 
     //点击播放
-    playMusic: function playMusic(_ref6,
-
-
-    val) {var state = _ref6.state,commit = _ref6.commit;
+    playMusic: function playMusic(_ref6, val) {var state = _ref6.state,commit = _ref6.commit;
       commit('SET_PLAYINFO', val);
       commit('ADD_MUSIC_PLAY', val);
       commit('SET_PLAYING', true);
     } } });var _default =
-
 
 
 store;exports.default = _default;
@@ -9299,9 +9281,9 @@ var index = {
 
 /***/ }),
 /* 13 */
-/*!***************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/utils/audio.js ***!
-  \***************************************************************/
+/*!*************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/utils/audio.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9328,9 +9310,9 @@ module.exports = {
 
 /***/ }),
 /* 14 */
-/*!***************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/utils/cache.js ***!
-  \***************************************************************/
+/*!*************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/utils/cache.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9350,9 +9332,9 @@ var removeCache = function removeCache(key) {
 
 /***/ }),
 /* 15 */
-/*!********************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/user.js ***!
-  \********************************************************************/
+/*!******************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/user.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9406,9 +9388,9 @@ var getUserHistory = function getUserHistory(params) {
 
 /***/ }),
 /* 16 */
-/*!*****************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/utils/request.js ***!
-  \*****************************************************************/
+/*!***************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/utils/request.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9430,7 +9412,6 @@ var request = {
   get: function get(url, data) {
 
     return new Promise(function (resolve, reject) {
-
       uni.request({
         url: url == '/login/cellphone' ? 'https://api.klutz.cc/login/cellphone' : baseURL + url,
         data: data,
@@ -9442,7 +9423,7 @@ var request = {
         method: "GET",
         success: function success(response) {
           var res = response.data;
-          if (res.code === 200) {
+          if (res.code === 200 || url == '/check/music') {
             resolve(res);
           } else {
             reject(res);
@@ -9551,9 +9532,9 @@ request;exports.default = _default;
 
 /***/ }),
 /* 17 */
-/*!*************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/index.js ***!
-  \*************************************************************/
+/*!***********************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/index.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9579,9 +9560,9 @@ singer);exports.default = _default;
 
 /***/ }),
 /* 18 */
-/*!********************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/home.js ***!
-  \********************************************************************/
+/*!******************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/home.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9667,25 +9648,22 @@ var getSelectionData = function getSelectionData() {
 
 /***/ }),
 /* 19 */
-/*!**********************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/search.js ***!
-  \**********************************************************************/
+/*!********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/search.js ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.getLyric = exports.getMusicUrl = exports.getSearchList = exports.getSuggestList = exports.getHotDetailSearch = exports.getDefaultSearch = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-
-
+Object.defineProperty(exports, "__esModule", { value: true });exports.getLyric = exports.checkMusicUrl = exports.getMusicUrl = exports.getSearchList = exports.getSuggestList = exports.getHotDetailSearch = exports.getDefaultSearch = void 0;var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *  默认搜索关键词
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *  @return {Object}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        *  默认搜索关键词
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        *  @return {Object}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        */
 var getDefaultSearch = function getDefaultSearch(params) {
   return _request.default.get('/search/default', params);
 };
-
 
 /**
     *  热门搜索 详细
@@ -9697,8 +9675,8 @@ var getHotDetailSearch = function getHotDetailSearch(params) {
 
 /**
     *  搜索建议
-    *  @param {String} keywords 
-    *  @param {String} type   
+    *  @param {String} keywords
+    *  @param {String} type
     *  @return {Array}
     */exports.getHotDetailSearch = getHotDetailSearch;
 var getSuggestList = function getSuggestList(params) {
@@ -9711,7 +9689,7 @@ var getSuggestList = function getSuggestList(params) {
 
 /**
     *  搜索
-    *  @param {String} keywords 
+    *  @param {String} keywords
     *  @return {Array}
     */exports.getSuggestList = getSuggestList;
 var getSearchList = function getSearchList(params) {
@@ -9728,19 +9706,28 @@ var getMusicUrl = function getMusicUrl(params) {
 };
 
 /**
-    *  根据id去获取歌词
+    *  判断是否有版权
     *  @param  {Number} id
     *  @return {Array}
     */exports.getMusicUrl = getMusicUrl;
+var checkMusicUrl = function checkMusicUrl(params) {
+  return _request.default.get('/check/music', params);
+};
+
+/**
+    *  根据id去获取歌词
+    *  @param  {Number} id
+    *  @return {Array}
+    */exports.checkMusicUrl = checkMusicUrl;
 var getLyric = function getLyric(params) {
   return _request.default.get('/lyric', params);
 };exports.getLyric = getLyric;
 
 /***/ }),
 /* 20 */
-/*!************************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/playList.js ***!
-  \************************************************************************/
+/*!**********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/playList.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9767,9 +9754,9 @@ var getPlayDetail = function getPlayDetail(params) {
 
 /***/ }),
 /* 21 */
-/*!******************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/qq.js ***!
-  \******************************************************************/
+/*!****************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/qq.js ***!
+  \****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9805,9 +9792,9 @@ var searchQQMusicLyric = function searchQQMusicLyric(params) {
 
 /***/ }),
 /* 22 */
-/*!*******************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/utils/qqRequest.js ***!
-  \*******************************************************************/
+/*!*****************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/utils/qqRequest.js ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9909,9 +9896,9 @@ request;exports.default = _default;
 
 /***/ }),
 /* 23 */
-/*!************************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/songList.js ***!
-  \************************************************************************/
+/*!**********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/songList.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9936,9 +9923,9 @@ var getSongList = function getSongList(params) {
 
 /***/ }),
 /* 24 */
-/*!************************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/rankList.js ***!
-  \************************************************************************/
+/*!**********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/rankList.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9955,9 +9942,9 @@ var getRankList = function getRankList() {
 
 /***/ }),
 /* 25 */
-/*!**********************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/api/modules/singer.js ***!
-  \**********************************************************************/
+/*!********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/api/modules/singer.js ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10787,9 +10774,9 @@ if (hadRuntime) {
 
 /***/ }),
 /* 35 */
-/*!***************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/utils/index.js ***!
-  \***************************************************************/
+/*!*************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/utils/index.js ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10933,9 +10920,9 @@ function getName(val) {
 /* 98 */,
 /* 99 */,
 /* 100 */
-/*!************************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/plugins/pinyin/utils.js ***!
-  \************************************************************************/
+/*!**********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/plugins/pinyin/utils.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10983,9 +10970,9 @@ function getGroupByPinyin(arr) {var key = arguments.length > 1 && arguments[1] !
 
 /***/ }),
 /* 101 */
-/*!***************************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/plugins/pinyin/toPinyin.js ***!
-  \***************************************************************************/
+/*!*************************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/plugins/pinyin/toPinyin.js ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11070,9 +11057,9 @@ toPinyin;exports.default = _default;
 
 /***/ }),
 /* 102 */
-/*!*************************************************************************!*\
-  !*** C:/Users/Administrator/Desktop/uni-music/plugins/pinyin/pinyin.js ***!
-  \*************************************************************************/
+/*!***********************************************************************************!*\
+  !*** C:/Users/Administrator/Desktop/study/uni/uni-music/plugins/pinyin/pinyin.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
