@@ -89,7 +89,7 @@ git clone https://github.com/biubiubiu01/uni-music.git
 ## 项目截图
 
 ![登录页](http://qny35rvpf.hn-bkt.clouddn.com/imagelogin.jpg)
-![首页](http://qny35rvpf.hn-bkt.clouddn.com/imagelogin.jpg)
+![首页](http://qny35rvpf.hn-bkt.clouddn.com/imageindex.jpg)
 ![歌单](http://qny35rvpf.hn-bkt.clouddn.com/imagelogin.jpg)
 ![歌单详情](http://qny35rvpf.hn-bkt.clouddn.com/imagesongDetail.jpg)
 ![排行榜](http://qny35rvpf.hn-bkt.clouddn.com/imagesong.jpg)
