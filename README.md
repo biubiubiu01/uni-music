@@ -4,11 +4,11 @@
   </a>
 
 ## 前言
-平时喜欢听歌，但是经常遇到需要vip的歌曲和音乐版权的问题，有时候为了一首音乐还会去下一个APP，所以就突发奇想，想做一个音乐播放器玩玩，实现vip歌曲播放和跨平台歌曲播放，然后就直接开始干，由于打算发布多个平台，而且平时也是使用的vue，所以决定使用uniapp进行开发。
+> 2.0版本，播放功能优化，页面颜色主题改版，修复1.0存在的bug，实现多端发布。
 
 ## 简介
 
-[Uni Music](https://github.com/biubiubiu01/uni-music/) 基于uniapp+colorUI 开发的音乐播放器，目前只支持微信小程序，后续会逐渐兼容发布成H5,APP等，<b>已实现网易云音乐歌曲(非vip)</b>和 <b>qq音乐歌曲(vip)</b> 跨端播放...
+[Uni Music](https://github.com/biubiubiu01/uni-music/) 基于uniapp+colorUI 开发的音乐播放器，支持多端发布
 
 ## 开发准备
 
@@ -18,14 +18,15 @@
 * iconfont图标库
 * 接口请求封装
 * 自定义头部
+* 自定义tabbar
 * 网易云音乐Api,感谢大佬提供的node服务： <a href="https://github.com/Binaryify/NeteaseCloudMusicApi">NeteaseCloudMusicApi</a>
-* qq音乐Api,感谢大佬提供的服务： <a href="https://github.com/jsososo/QQMusicApi">QQMusicApi</a>
+
 
 ## 实现功能
 1. 用户登录
 1. 搜索
 1. 搜索建议和搜索历史记录
-1. 跨端搜索播放(qq和网易云音乐)
+1. 搜索播放
 1. 每日推荐
 1. 排行榜
 1. 热门歌手和歌手所有歌曲
@@ -73,33 +74,24 @@
 
 
 ```
-
-## 使用说明
-> 由于个人用户无法获取到微信小程序的手机号，所以这里用户登录的账号是在login里面写死，为了安全，已经将其注释掉，使用前请先将login.vue的账号密码修改为自己的网易云账号密码
-
-
-```
 # 克隆项目
-git clone https://github.com/biubiubiu01/uni-music.git
-# 使用 HBuilder X 导入项目
-# 修改login页面用户名密码
-# 运行到微信小程序
-```
+
+> 新版本是2.0分支，默认分支是以前的版本，切记！！！
+
+- git clone https://github.com/biubiubiu01/uni-music.git 
+- 使用 HBuilder X 导入项目
+- 修改login页面用户名密码(默认测试账号)
+- 运行项目
 
 
-## 项目截图
-
-![登录页](http://qny35rvpf.hn-bkt.clouddn.com/imagelogin.jpg)
-![首页](http://qny35rvpf.hn-bkt.clouddn.com/imageindex.jpg)
-![歌单](http://qny35rvpf.hn-bkt.clouddn.com/imagemusic.jpg)
-![歌单详情](http://qny35rvpf.hn-bkt.clouddn.com/imagesongDetail.jpg)
-![排行榜](http://qny35rvpf.hn-bkt.clouddn.com/imagesong.jpg)
-![歌手](http://qny35rvpf.hn-bkt.clouddn.com/imagesinger.jpg)
-![搜索](http://qny35rvpf.hn-bkt.clouddn.com/imagesearch.jpg)
-![音乐播放](http://qny35rvpf.hn-bkt.clouddn.com/imageplay.jpg)
-![我的](http://qny35rvpf.hn-bkt.clouddn.com/imagemy.jpg)
+# 项目预览
 
 
+![输入图片说明](preview/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220117173402.png)
 
-
-
+![输入图片说明](preview/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220117173412.png)
+![输入图片说明](preview/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220117173428.png)
+![输入图片说明](preview/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220117173448.png)
+![输入图片说明](preview/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220117173510.png)
+![输入图片说明](preview/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220117173526.png)
+![输入图片说明](preview/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220117173539.png)

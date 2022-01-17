@@ -1,12 +1,13 @@
 <template>
 	<div class="playList-container">
-		<cu-custom bgColor="bg-gradual-orange" :isBack="true"><block slot="content">歌单列表</block></cu-custom>
+		<cu-custom bgColor="#fff" :isBack="true"><view slot="content" style="color: #000">歌单</view></cu-custom>
 		<scroll-view scroll-x class="bg-white nav" scroll-with-animation :scroll-left="scrollLeft">
-			<view class="cu-item" :class="item.name == currentName ? 'text-orange cur' : ''" v-for="(item, index) in tagList" :key="index" @click="tabSelect(item, index)">
+			<view class="cu-item" :class="item.name == currentName ? 'basic-icon-color cur' : ''" v-for="(item, index) in tagList" :key="index" @click="tabSelect(item, index)">
 				{{ item.name }}
 			</view>
 		</scroll-view>
-		<scroll-view scroll-y scroll-with-animation @scrolltolower="reachBottom()"  :style="{ height: height, 'margin-top': '20rpx' }">
+		<scroll-view scroll-y scroll-with-animation @scrolltolower="reachBottom()" :style="{ height: height, 'margin-top': '20rpx' }">
+			<box-title title="热门歌单" style="margin-top: 10px;"></box-title>
 			<view class="tower-swiper" @touchmove="TowerMove" @touchstart="TowerStart" @touchend="TowerEnd">
 				<view
 					class="tower-item"
@@ -18,19 +19,19 @@
 					@click="toPlayListDetail(item)"
 				>
 					<view class="swiper-item">
-						<image :src="item.coverImgUrl + '?param=200y200'" mode="aspectFill" style="border-radius: 8px;">
+						<image :src="item.coverImgUrl + '?param=200y200'" mode="aspectFill" class="swiper-item-img">
 							<view class="title" v-if="item.mLeft == 0">{{ item.name }}</view>
 						</image>
 					</view>
 				</view>
 			</view>
+			<box-title title="歌单列表" style="margin-top: 30px;"></box-title>
 			<div class="musicList">
 				<view class="list-item" v-for="item in recommendList" :key="item.id">
 					<view class="hotCount" v-if="item.playCount > 0 || item.playcount > 0">
 						<text class="iconfont icon-kaishi" style="margin-right: 3.5px;"></text>
 						<text>{{ playCount(item.playCount || item.playcount) }}</text>
 					</view>
-
 					<view class="bg-img flex align-end list-item-image" :style="'background-image:url(' + item.coverImgUrl + '?param=230y230)'" @click="toPlayListDetail(item)">
 						<view class="bg-shadeBottom padding-top-xl radioName">{{ item.name }}</view>
 					</view>
@@ -39,8 +40,7 @@
 				<view class="loading" v-if="status == 'loading' || status == 'notMore'">{{ status == 'notMore' ? '没有更多了' : '努力加载中...' }}</view>
 			</div>
 		</scroll-view>
-
-		<music-control />
+		<music-control v-if="playInfo.id" />
 	</div>
 </template>
 
@@ -57,7 +57,7 @@ export default {
 			tagList: [],
 			status: null,
 			total: 0,
-			offset: 0,
+			offset: 0
 		};
 	},
 	created() {
@@ -66,8 +66,8 @@ export default {
 	},
 	computed: {
 		height() {
-			let height = this.CustomBar / (uni.upx2px(this.CustomBar) / this.CustomBar) + 110;
-			if (this.playInfo) {
+			let height = this.CustomBar / (uni.upx2px(this.CustomBar) / this.CustomBar)
+			if (this.playInfo.id) {
 				height += 110;
 			}
 			return `calc(100%  - ${height}rpx)`;
@@ -77,6 +77,17 @@ export default {
 		}
 	},
 	methods: {
+		//获取歌单分类
+		async getSongTagList() {
+			const data = await this.$api.getSongTagList();
+			let list = data.sub || [];
+			if (list.length > 0) {
+				list = list.slice(0, 10);
+			}
+			this.tagList = [{ name: '全部' }, ...list];
+		},
+
+		//加载更多
 		reachBottom() {
 			this.status = 'loading';
 			if (this.offset >= this.total) {
@@ -91,10 +102,8 @@ export default {
 			this.getRecommendData(true);
 		},
 
+		//获取对应歌单
 		async getRecommendData(bool) {
-			uni.showLoading({
-				title: '加载中...'
-			});
 			const cat = this.currentName;
 			const offset = this.offset;
 			const data = await this.$api.getSongList({ cat, offset, limit: 30, order: 'hot' });
@@ -112,17 +121,12 @@ export default {
 				this.swiperList = swiperList;
 				this.recommendList = list.slice(6);
 			}
+		},
 
-			uni.hideLoading();
-		},
-		async getSongTagList() {
-			const data = await this.$api.getSongTagList();
-			let list = data.sub || [];
-			this.tagList = [{ name: '全部' }, ...list];
-		},
 		playCount(val) {
 			return filterPlayCount(val);
 		},
+
 		tabSelect(val, index) {
 			this.currentName = val.name;
 			this.scrollLeft = (index - 1) * 60;
@@ -188,10 +192,17 @@ export default {
 			transform: scale(calc(0.5 + var(--index) / 10));
 			margin-left: calc(var(--left) * 100upx - 150upx);
 			z-index: var(--index);
-			.title {
-				text-align: center;
-				margin-top: 10px;
-				position: absolute;
+			.swiper-item {
+				.swiper-item-img {
+					border-radius: 6px;
+				}
+				.title {
+					text-align: center;
+					margin-top: 10px;
+					position: absolute;
+					color: rgba(0, 0, 0, 0.5);
+					font-size: 14px;
+				}
 			}
 		}
 	}
@@ -199,8 +210,8 @@ export default {
 		padding-left: 15px;
 		width: 100%;
 		position: relative;
-		margin-top: 60px;
 		box-sizing: border-box;
+		margin-top: 15px;
 		.list-item {
 			width: calc(100% / 3 - 15px);
 			margin-right: 15px;
@@ -208,7 +219,6 @@ export default {
 			display: inline-block;
 			overflow: hidden;
 			position: relative;
-			border-radius: 7px;
 
 			.hotCount {
 				position: absolute;
@@ -220,11 +230,12 @@ export default {
 				z-index: 10;
 				font-size: 12px;
 				background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0));
+				border-radius: 6px;
 			}
 
 			.list-item-image {
 				height: 115px;
-				border-radius: 7px;
+				border-radius: 6px;
 			}
 
 			.list-item-text {
@@ -232,7 +243,7 @@ export default {
 				width: 100%;
 				padding-top: 2px;
 				white-space: normal;
-				color: #666;
+				color: rgba(0, 0, 0, 0.5);
 				font-size: 12px;
 				display: -webkit-box;
 				-webkit-box-orient: vertical;

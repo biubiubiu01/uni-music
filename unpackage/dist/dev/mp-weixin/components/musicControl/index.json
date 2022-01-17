@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "play-list": "/components/musicControl/playList"
-  },
-  "component": true
-}

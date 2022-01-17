@@ -3,30 +3,40 @@ import {
 } from "@/utils/cache.js"
 
 // const baseURL = 'http://localhost:3000'
-// const baseURL='http://api.jiaiqi.cn:521'
 const baseURL = 'https://autumnfish.cn'
-// const baseURL='https://api.klutz.cc'
-// const baseURL='https://tree.xingyuncm.cn'
-// https://aqueous-retreat-34523.herokuapp.com/
+// const baseURL = 'http://www.lidaqing.plus:1901/'
+// const baseURL = 'https://aqueous-retreat-34523.herokuapp.com/'
+// const baseURL='https://nicemusic-api.lxhcool.cn/'
+// const baseURL='http://wyyapi.biggodw.cn/'
+// const baseURL='http://124.71.236.165:3000/'
+// const baseURL='http://bao.lqjhome.cn:3000/'
 
 
 
 const request = {
 	get(url, data) {
-
 		return new Promise((resolve, reject) => {
 			uni.request({
-				url: url == '/login/cellphone' ? 'https://api.klutz.cc/login/cellphone' : baseURL + url,
-				data: data,
+				url: url.indexOf('http') != -1 ? url : baseURL +
+					url,
+				data: {
+					...data,
+					// #ifdef H5
+					cookie: getCache('COOKIE')
+					// #endif
+				},
 				header: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/x-www-form-urlencoded', //自定义请求头信息
-					'cookie': getCache('COOKIE')
+					// #ifndef H5
+					'cookie': getCache('COOKIE'),
+					// #endif
 				},
+
 				method: "GET",
 				success: (response) => {
 					let res = response.data
-					if (res.code === 200||url=='/check/music') {
+					if (res.code === 200 || url == '/check/music') {
 						resolve(res)
 					} else {
 						reject(res)
@@ -79,43 +89,47 @@ const request = {
 
 const showError = error => {
 	let errorMsg = ''
-	switch (error.code) {
-		case 400:
-			errorMsg = '请求参数错误'
-			break
-		case 301:
-			errorMsg = '未授权，请登录'
-			break
-		case 403:
-			errorMsg = '跨域拒绝访问'
-			break
-		case 404:
-			errorMsg = '请求地址不存在'
-			break
-		case 408:
-			errorMsg = '请求超时'
-			break
-		case 500:
-			errorMsg = '服务器内部错误'
-			break
-		case 501:
-			errorMsg = '服务未实现'
-			break
-		case 502:
-			errorMsg = '网关错误'
-			break
-		case 503:
-			errorMsg = '服务不可用'
-			break
-		case 504:
-			errorMsg = '网关超时'
-			break
-		case 505:
-			errorMsg = 'HTTP版本不受支持'
-			break
-		default:
-			errorMsg = "请求失败"
-			break
+	if (error.message) {
+		errorMsg = error.message
+	} else {
+		switch (error.code) {
+			case 400:
+				errorMsg = '请求参数错误'
+				break
+			case 301:
+				errorMsg = '未授权，请登录'
+				break
+			case 403:
+				errorMsg = '跨域拒绝访问'
+				break
+			case 404:
+				errorMsg = '请求地址不存在'
+				break
+			case 408:
+				errorMsg = '请求超时'
+				break
+			case 500:
+				errorMsg = '服务器内部错误'
+				break
+			case 501:
+				errorMsg = '服务未实现'
+				break
+			case 502:
+				errorMsg = '网关错误'
+				break
+			case 503:
+				errorMsg = '服务不可用'
+				break
+			case 504:
+				errorMsg = '网关超时'
+				break
+			case 505:
+				errorMsg = 'HTTP版本不受支持'
+				break
+			default:
+				errorMsg = "请求失败"
+				break
+		}
 	}
 
 	uni.showToast({
@@ -124,6 +138,11 @@ const showError = error => {
 		duration: 3000,
 		complete: function() {
 			setTimeout(function() {
+				if (error.code == 301) {
+					uni.navigateTo({
+						url: '../login/index'
+					});
+				}
 				uni.hideToast();
 			}, 3000);
 		}

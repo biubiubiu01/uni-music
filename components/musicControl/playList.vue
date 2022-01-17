@@ -1,116 +1,140 @@
 <template>
-	<view class="cu-modal bottom-modal" :class="{ show: modelShow }" @click.self="$emit('handleClose')">
-		<view class="dialog-container">
-			<div class="title">
-				<span style="font-weight: 600;font-size: 32rpx;">播放列表</span>
-				({{ playList.length }})
-			</div>
-			<scroll-view scroll-y style="height:calc(100% - 40px);text-align: left;">
-				<div
-					class="play-item"
-					v-for="(item, index) in playList"
-					:key="item.id"
-					:class="{ active: item.id == playInfo.id, lastMusic: index == playList.length - 1 }"
-					@click="startPlayInfo(item)"
-				>
-					<view class="musicBox">
-						<span class="musicName">{{ item.name }}</span>
-						<span class="musicAuthor">- {{ item.author }}</span>
+	<view class="cu-modal bottom-modal" :class="{ show: value }" @click.self="$emit('input', false)" :key="number">
+		<view class="cu-dialog play-list-dialog">
+			<view class="cu-bar bg-white list-title">
+				播放列表
+				<text class="light-text">(共{{ playList.length }}首)</text>
+			</view>
+			<scroll-view class="bg-white play-list " scroll-y style="height:65vh">
+				<view class="music-item flex" :class="{ active: item.id == playInfo.id }" v-for="(item, index) in playList" :key="item.id" @click="startPlayInfo(item)">
+					<image :src="item.coverImgUrl" class="music-img"></image>
+					<view class="music-info">
+						<view class="music-name text-overflow">{{ item.title }}</view>
+						<view class="music-singer text-overflow flex">{{ item.singer }}</view>
 					</view>
-					<text class="cuIcon-close" @click.stop="removePlayList(item)"></text>
-				</div>
+					<text class="lg basic-icon-color cuIcon-deletefill" style="font-size: 18px;" @click.stop="removePlayList(item)"></text>
+				</view>
 			</scroll-view>
 		</view>
 	</view>
 </template>
 
 <script>
+import { getCache } from '@/utils/cache.js';
+import { mapState } from 'vuex';
 export default {
 	props: {
-		modelShow: {
+		value: {
 			type: Boolean,
 			default: false
 		}
 	},
-	computed: {
-		playList() {
-			return this.$store.state.playList;
-		},
-		playing() {
-			return this.$store.state.playing;
-		},
-		playInfo() {
-			return this.$store.state.playInfo;
-		}
+	data() {
+		return {
+			playList: this.$audio.audiolist,
+			number:Math.random()*100000
+		};
 	},
+	created() {
+		this.$audio.on('setAudio', 'event-a', list => {
+			this.playList = list;
+			this.number=Math.random()*100000
+		});
+	},
+	computed: mapState({
+		playInfo: state => state.playInfo,
+		paused: state => state.paused
+	}),
 	methods: {
 		async removePlayList(val) {
 			if (this.playList.length == 1) {
 				this.$audio.stop();
-				this.$store.commit('REMOVE_MUSIC_PLAY', val);
 				//如果是音乐详情页，那就返回首页
 				this.$emit('backHome');
-				return;
+			} else {
+				//如果删除的歌曲是正在播放的歌曲
+				if (this.playInfo.id == val.id) {
+					this.$store.dispatch('changePlay', 1);
+				}
 			}
-			//如果删除的歌曲是正在播放的歌曲
-			if (this.playInfo.id == val.id) {
-				//切换下一首播放
-				this.$store.dispatch('changePlay', 'next');
-			}
-			this.$store.commit('REMOVE_MUSIC_PLAY', val);
+			this.$store.dispatch('removeMusic', val);
 		},
+
 		async startPlayInfo(item) {
 			if (item.id == this.playInfo.id) return;
 			this.$store.dispatch('playMusic', item);
 		}
+	},
+	destroyed() {
+		this.$audio.off('setAudio', 'event-a');
 	}
 };
 </script>
 
 <style lang="scss" scoped>
-.dialog-container {
-	width: 92%;
-	height: 63%;
-	background: #f8f8f8;
-	border-radius: 15px;
-	position: absolute;
-	bottom: 15px;
-	left: 4%;
-	box-sizing: border-box;
-	padding: 10px 20px;
-
-	.musicBox {
-		width: calc(100% - 60px);
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-	.title {
-		height: 40px;
-	}
-	.play-item {
-		padding: 12px 0;
-		border-bottom: 1upx solid rgba(0, 0, 0, 0.1);
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		&.lastMusic {
-			border-bottom: unset !important;
+.play-list-dialog {
+	border-top-left-radius: 26px !important;
+	border-top-right-radius: 26px !important;
+	.list-title {
+		font-size: 32rpx;
+		color: #000;
+		justify-content: center;
+		.light-text {
+			font-size: 24rpx;
+			margin-left: 6px;
+			color: rgba(0, 0, 0, 0.5);
 		}
-		&.active {
-			.musicName,
-			.musicAuthor {
-				color: #ff9700;
+	}
+	.play-list {
+		.music-item {
+			height: 60px;
+			box-sizing: border-box;
+			padding: 0 20px;
+			align-items: center;
+			margin-bottom: 5px;
+			position: relative;
+			&:nth-last-of-type {
+				margin-bottom: 0;
 			}
-		}
-		.musicName {
-			color: #000;
-			font-size: 30rpx;
-			margin-right: 5px;
-		}
-		.musicAuthor {
-			font-size: 12px;
-			color: #666;
+			&.active {
+				background-image: linear-gradient(to right, rgba(247, 73, 79, 0.1), rgba(247, 73, 79, 0.05));
+				.music-info {
+					.music-name,
+					.music-singer {
+						color: #f84e51 !important;
+					}
+					&::before {
+						content: '';
+						width: 4px;
+						height: 55px;
+						background-image: linear-gradient(to bottom, rgb(253, 117, 102), rgb(247, 73, 79));
+						position: absolute;
+						left: 0px;
+						top: 3px;
+					}
+				}
+			}
+			.music-img {
+				width: 45px !important;
+				height: 45px !important;
+				border-radius: 6px;
+			}
+			.music-info {
+				margin-right: 15px;
+				margin-left: 15px;
+				width: calc(100vw - 135px);
+				text-align: left;
+				.music-name {
+					font-size: 30rpx;
+					margin-bottom: 5px;
+					color: #000;
+				}
+				.music-singer {
+					color: rgba(0, 0, 0, 0.5);
+					font-size: 24rpx;
+					align-items: center;
+				}
+			}
 		}
 	}
 }

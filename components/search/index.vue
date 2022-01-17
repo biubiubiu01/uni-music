@@ -43,7 +43,12 @@
 			this.debounceSuggest=debounce(() => {
 			    this.getSuggestList()
 			}, 250)
-			this.getDefaultSearch()
+			if(!this.text){
+				this.getDefaultSearch()
+			}else{
+				this.defaultKeywords=this.text
+			}
+			
 		},
 		methods:{
 			//获取默认搜索关键词

@@ -15,8 +15,9 @@ export const getSingerList = () => {
  *  @return {Array}
  */
 export const getSingerInfo = (params) => {
-	return request.get('/artists', params)
+	return request.get('/artist/detail', params)
 }
+
 
 /**
  *  歌手 全部歌曲

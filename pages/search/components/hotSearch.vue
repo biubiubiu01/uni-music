@@ -52,12 +52,12 @@ export default {
 			display: inline-block;
 			&.topThree {
 				.index {
-					color: #ff9700;
+					color: rgb(248, 78, 81);
 				}
 				.word {
 					font-family: 'Microsoft Yahei', Arial, Helvetica, sans-serif;
 					font-weight: 600;
-					color: #303030;
+					color: rgba(0,0,0,0.5);
 				}
 			}
 			.index {
@@ -71,6 +71,7 @@ export default {
 				vertical-align: middle;
 				overflow: hidden;
 				text-overflow:ellipsis;
+				color: rgb(0,0,0);
 			}
 
 			.iconImg {

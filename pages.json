@@ -1,85 +1,73 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
+			"path": "pages/home/index",
 			"style": {
-				"enablePullDownRefresh": true,
-				"backgroundTextStyle": "dark"
+				"enablePullDownRefresh": true
 			}
 		}, 
 		{
 			"path": "pages/login/index",
 			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
-		},
-		{
-			"path": "pages/search/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
-		},
-		{
-			"path": "pages/searchList/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
-		},
-		{
-			"path": "pages/play/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
-		},
-		{
-			"path": "pages/songDetail/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
-		},
-		{
-			"path": "pages/dayRecommend/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
-		},
-		{
-			"path": "pages/songList/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
-		},{
-			"path": "pages/singer/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
-		},{
-			"path": "pages/rankList/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
-			}
-		},
-		{
-			"path": "pages/singerPlayList/index",
-			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/my/index",
 			"style": {
-				"enablePullDownRefresh": false,
-				"backgroundTextStyle": "dark"
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/search/index",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/searchList/index",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/play/index",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/songDetail/index",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/dayRecommend/index",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/songList/index",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+		},{
+			"path": "pages/singer/index",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+		},{
+			"path": "pages/rankList/index",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/singerPlayList/index",
+			"style": {
+				"enablePullDownRefresh": false
 			}
 		}
 	],
@@ -89,22 +77,5 @@
 		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#ffffff",
 		"backgroundColor": "#ffffff"
-	},
-	"tabBar": {
-			"color": "#7A7E83",
-			"selectedColor": "#ff9700",
-			"borderStyle": "black",
-			"backgroundColor": "#FFFFFF",
-			"list": [{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/tabBar/recommend.png",
-				"selectedIconPath": "static/tabBar/recommendHL.png",
-				"text": "音乐"
-			}, {
-				"pagePath": "pages/my/index",
-				"iconPath": "static/tabBar/my.png",
-				"selectedIconPath": "static/tabBar/myHL.png",
-				"text": "我的"
-			}]
-		}
+	}
 }

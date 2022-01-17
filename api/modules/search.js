@@ -36,7 +36,7 @@ export const getSuggestList = (params) => {
  *  @return {Array}
  */
 export const getSearchList = (params) => {
-  return request.get('/cloudsearch', params)
+  return request.get('http://bao.lqjhome.cn:3000/cloudsearch', params)
 }
 
 /**
@@ -45,7 +45,7 @@ export const getSearchList = (params) => {
  *  @return {Array}
  */
 export const getMusicUrl = (params) => {
-  return request.get('/song/url', params)
+  return request.get('http://bao.lqjhome.cn:3000/song/url', params)
 }
 
 /**

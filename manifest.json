@@ -48,7 +48,9 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+				"UIBackgroundModes":["audio"]
+			},
             /* SDK配置 */
             "sdkConfigs" : {},
             "icons" : {

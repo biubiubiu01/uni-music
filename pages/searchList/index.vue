@@ -1,45 +1,24 @@
 <template>
 	<div class="searchList-container">
-		<cu-custom bgColor="bg-gradual-orange" :isBack="true"><block slot="content">搜索结果</block></cu-custom>
-		<search :text="text" @handleSearch="handleSearch"></search>
+		<cu-custom bgColor="#fff" :isBack="true"><view slot="content" style="color: #000">搜索结果</view></cu-custom>
+		<search :text="keywords" @handleSearch="handleSearch"></search>
 		<div class="musicList">
-			<view class="toggle">
-				搜索来源：
-				<view class="cu-tag round" style="padding:0 24rpx" :class="{ active: source == '163' }" @click="toggleSource">网易云音乐</view>
-				<view class="cu-tag round" style="padding:0 24rpx" :class="{ active: source == 'qq' }" @click="toggleSource">qq音乐</view>
-			</view>
-			<box-title title="单曲" buttonName="播放全部" iconName="kaishi2" :right="true" className="searchTitle" @handlePlay="handlePlayAllMusic"></box-title>
-
-			<scroll-view scroll-y scroll-with-animation @scrolltolower="reachBottom()" :style="{ height: height }">
-				<div class="music-item flex" v-for="(item, index) in musicList" :key="index" @click="handlePlayMusic(item)">
-					<image v-if="item.al.picUrl" :src="item.al.picUrl + '?param=60y60'" mode="" class="musicImg"></image>
-					<div class="rightInfo">
-						<div class="music-info">
-							<span style="color:rgb(86,124,166)">{{ item.name || item.songname }}</span>
-							<span v-if="item.alia && item.alia.length > 0" style="margin-left: 5px;">({{ item.alia[0] }})</span>
-						</div>
-						<div class="music-info" style="margin-top:6px;">
-							<template v-if="item.ar && item.ar.length > 0">
-								<span v-for="(val, i) in item.ar" :key="i">
-									{{ val.name }}
-									<span v-if="i != item.ar.length - 1" style="margin:0 3px">/</span>
-								</span>
-							</template>
-							<template v-if="item.singer && item.singer.length > 0">
-								<span v-for="(val, i) in item.singer" :key="i">
-									{{ val.name }}
-									<span v-if="i != item.singer.length - 1" style="margin:0 3px">/</span>
-								</span>
-							</template>
-							<span v-if="item.al.name" style="margin-left: 5px;">- {{ item.al.name }}</span>
-							<span v-if="item.albumname" style="margin-left: 5px;">- {{ item.albumname }}</span>
-						</div>
-					</div>
-				</div>
+			<box-title title="单曲" buttonName="播放全部" iconName="kaishi2" @handlePlay="handlePlayAllMusic"></box-title>
+			<scroll-view scroll-y scroll-with-animation @scrolltolower="reachBottom()" :style="{ height: height, 'margin-top': '10px' }">
+				<view class="music-item flex" :class="{ active: item.id == playInfo.id }" v-for="(item, index) in musicList" :key="index" @click="handlePlayMusic(item)">
+					<image :src="item.al.picUrl + '?param=60y60'" mode="widthFix" class="music-img"></image>
+					<view class="music-info">
+						<view class="music-name text-overflow">{{ item.name }}</view>
+						<view class="music-singer text-overflow flex">
+							<span class="small-icon">{{ item.id % 2 == 0 ? 'SQ' : 'HD' }}</span>
+							{{ item.ar ? item.ar.map(item => item.name).join('/') : '' }} - {{ item.al.name }}
+						</view>
+					</view>
+				</view>
 				<view class="loading" v-if="status == 'loading' || status == 'notMore'">{{ status == 'notMore' ? '没有更多了' : '努力加载中...' }}</view>
 			</scroll-view>
 		</div>
-		<music-control />
+		<music-control v-if="playInfo.id"/>
 	</div>
 </template>
 
@@ -47,30 +26,25 @@
 import search from '@/components/search/index.vue';
 import boxTitle from '@/components/boxTitle/index.vue';
 import { getImage, getName } from '@/utils/index.js';
+import { mapState } from 'vuex';
 export default {
 	data() {
 		return {
-			text: '',
 			musicList: [],
 			offset: 0,
 			status: null,
 			keywords: '',
-			total: 0,
-			source: '163',
-			pageNo: 1
+			total: 0
 		};
 	},
 	components: { search, boxTitle },
 	computed: {
-		playInfo() {
-			return this.$store.state.playInfo;
-		},
-		playing() {
-			return this.$store.state.playing;
-		},
+		...mapState({
+			playInfo: state => state.playInfo
+		}),
 		height() {
-			let height = (this.CustomBar + 60) / (uni.upx2px(this.CustomBar + 60) / (this.CustomBar + 60)) + 120;
-			if (this.playInfo) {
+			let height = this.CustomBar / (uni.upx2px(this.CustomBar) / this.CustomBar) + 190;
+			if (this.playInfo.id) {
 				height += 110;
 			}
 			return `calc(100vh  - ${height}rpx)`;
@@ -78,75 +52,38 @@ export default {
 	},
 	onLoad(options) {
 		const { keywords } = options;
-		this.text = keywords;
 		this.keywords = keywords;
-		if (this.source == '163') {
-			this.getMusicList();
-		} else {
-			this.getQQMusicList();
-		}
+		this.getMusicList();
 	},
 
 	methods: {
+		//加载更多
 		reachBottom() {
 			this.status = 'loading';
-			if (this.source == '163') {
-				if (this.offset >= this.total) {
-					this.status = 'notMore';
-					return;
-				}
-				this.offset += 30;
-				if (this.offset > this.total) {
-					this.offset = this.total;
-				}
-				this.getMusicList();
-			} else {
-				if (this.pageNo * 30 >= this.total) {
-					this.status = 'notMore';
-					return;
-				}
-				this.pageNo++;
-				this.getQQMusicList();
+			if (this.offset >= this.total) {
+				this.status = 'notMore';
+				return;
 			}
-		},
-		toggleSource() {
-			this.source = this.source == '163' ? 'qq' : '163';
-			this.offset = 0;
-			this.musicList = [];
-			this.pageNo = 1;
-			this.status = null;
-			if (this.source == '163') {
-				this.getMusicList();
-			} else {
-				this.getQQMusicList();
+			this.offset += 30;
+			if (this.offset > this.total) {
+				this.offset = this.total;
 			}
+			this.getMusicList();
 		},
+
 		//点击查询
 		handleSearch(val) {
 			this.keywords = val;
+			this.status = null;
 			this.offset = 0;
-			this.pageNo = 1;
+			this.total=0
 			this.musicList = [];
-			this.status = null;
-			if (this.source == '163') {
-				this.getMusicList();
-			} else {
-				this.getQQMusicList();
-			}
-		},
-
-		async getQQMusicList() {
-			const key = this.keywords;
-			const pageNo = this.pageNo;
-			const { data } = await this.$api.searchQQMusic({ key, pageNo, pageSize: 30 });
-			this.musicList.push(...data.list);
-			this.total = data.total || 0;
-			this.status = null;
+			this.getMusicList();
 		},
 
 		getMusicList() {
 			const { keywords, offset } = this;
-			this.$api.getSearchList({ keywords, offset }).then(res => {
+			this.$api.getSearchList({ keywords, offset, type: 1 }).then(res => {
 				const list = res.result.songs || [];
 				this.musicList.push(...list);
 				this.total = res.result.songCount || 0;
@@ -154,65 +91,35 @@ export default {
 			});
 		},
 
-		//全部加入歌单
+		//播放全部
 		handlePlayAllMusic() {
-			let list = [];
-			if (this.source == '163') {
-				list = this.musicList.map(item => {
-					return {
-						name: item.name,
-						id: item.id,
-						img1v1Url: getImage(item),
-						author: getName(item)
-					};
-				});
-			} else {
-				list = this.musicList.map(item => {
-					return {
-						name: item.songname,
-						id: item.songmid,
-						img1v1Url: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${item.albummid}.jpg`,
-						author: item.singer[0].name,
-						source: 'qq'
-					};
-				});
-			}
+			const list = this.musicList.map(item => {
+				return {
+					src: '',
+					title: item.name,
+					singer: getName(item),
+					coverImgUrl: getImage(item),
+					id: item.id
+				};
+			});
 			this.$store.dispatch('playAllMUsic', list);
 		},
 
 		//点击播放
 		handlePlayMusic(val) {
-			let currentPlay = {};
-			if (this.source == '163') {
-				if (this.playing && this.playInfo && this.playInfo.id == val.id) {
-					uni.navigateTo({
-						url: '../play/index'
-					});
-					return;
-				}
-				currentPlay = {
-					name: val.name,
-					id: val.id,
-					img1v1Url: getImage(val),
-					author: getName(val)
-				};
-				this.$store.dispatch('playMusic', currentPlay);
-			} else {
-				if (this.playing && this.playInfo && this.playInfo.id == val.songmid) {
-					uni.navigateTo({
-						url: '../play/index'
-					});
-					return;
-				}
-				currentPlay = {
-					name: val.songname,
-					id: val.songmid,
-					img1v1Url: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${val.albummid}.jpg`,
-					author: val.singer[0].name,
-					source: 'qq'
-				};
-				this.$store.dispatch('playMusic', currentPlay);
+			if (this.playInfo.id == val.id) {
+				uni.navigateTo({
+					url: '../play/index'
+				});
+				return;
 			}
+			this.$store.dispatch('playMusic', {
+				src: '',
+				title: val.name,
+				singer: getName(val),
+				coverImgUrl: getImage(val),
+				id: val.id
+			});
 		}
 	}
 };
@@ -220,35 +127,54 @@ export default {
 
 <style lang="scss" scoped>
 .musicList {
-	padding: 0 15px;
 	width: 100%;
 	position: relative;
 	margin-top: 20rpx;
-	box-sizing: border-box;
-	.active {
-		background: #ff9700;
-		color: #fff;
-	}
 	.music-item {
-		border-bottom: 1upx solid rgba(0, 0, 0, 0.1);
-		padding-bottom: 10px;
-		margin-top: 15px;
-		color: rgb(133, 133, 133);
+		height: 70px;
+		box-sizing: border-box;
+		padding: 0 20px;
 		align-items: center;
-		.musicImg {
-			width: 75rpx;
-			height: 75rpx;
-			border-radius: 6px;
-			margin-right: 25rpx;
+		margin-bottom: 10px;
+		&:nth-last-of-type {
+			margin-bottom: 0;
 		}
-		.rightInfo {
-			width: calc(100% - 90rpx);
+		&.active {
+			.music-info {
+				.music-name,
+				.small-icon,
+				.music-singer {
+					color: #f84e51 !important;
+				}
+			}
+		}
+		.music-img {
+			width: 58px;
+			border-radius: 6px;
 		}
 		.music-info {
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			width: 90%;
+			margin-left: 15px;
+			max-width: calc(100% - 80px);
+			.music-name {
+				font-size: 30rpx;
+				margin-bottom: 7px;
+				color: #000;
+			}
+			.music-singer {
+				color: rgba(0, 0, 0, 0.5);
+				font-size: 24rpx;
+				align-items: center;
+				width: 100%;
+				.small-icon {
+					margin-right: 6px;
+					transform: scale(0.9);
+					color: rgba(0, 0, 0, 0.5);
+					font-size: 12px;
+					padding: 1px 3px;
+					border: 1px solid rgba(0, 0, 0, 0.2);
+					border-radius: 4px;
+				}
+			}
 		}
 	}
 }

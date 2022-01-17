@@ -1,15 +1,16 @@
 <template>
-	<view>
-		<cu-custom bgColor="bg-gradual-orange" :isBack="true"><block slot="content">热门歌手</block></cu-custom>
+	<view class="singer-container">
+		<cu-custom bgColor="#fff" :isBack="true"><view slot="content" style="color: #000">热门歌手</view></cu-custom>
 		<scroll-view scroll-y class="indexes" :scroll-into-view="'indexes-' + listCurID" :style="[{ height: height }]" :scroll-with-animation="true" :enable-back-to-top="true">
 			<block v-for="(item, index) in list" :key="index">
 				<view :class="'indexItem-' + item.name" :id="'indexes-' + item.name" :data-index="item.name">
 					<view class="padding">{{ item.name }}</view>
-					<view class="cu-list menu-avatar no-padding">
-						<view class="cu-item" v-for="val in item.value" :key="val.id" @click.self="searchDetailSinger(val)">
+					<view class="cu-list page-background menu-avatar no-padding">
+						<view class="cu-item bg-white" v-for="val in item.value" :key="val.id" @click="searchDetailSinger(val)">
 							<view class="cu-avatar round lg" :style="'background-image:url(' + val.picUrl + '?param=100y100)'"></view>
 							<view class="content">
-								<view class="text-grey">{{ val.name }}</view>
+								<view class="singer-name text-overflow">{{ val.name }}</view>
+								<view class="singer-count" v-if="val.musicSize">{{ val.musicSize }}首</view>
 							</view>
 						</view>
 					</view>
@@ -18,12 +19,22 @@
 		</scroll-view>
 		<view class="indexBar" :style="[{ height: 'calc(' + height + ' - 50px)' }]">
 			<view class="indexBar-box" @touchstart="tStart" @touchend="tEnd" @touchmove.stop="tMove">
-				<view class="indexBar-item" v-for="(item, index) in list" :key="index" :id="index" @touchstart="getCur" @touchend="setCur">{{ item.name }}</view>
+				<view
+					class="indexBar-item"
+					:class="{ active: item.name === listCur }"
+					v-for="(item, index) in list"
+					:key="index"
+					:id="index"
+					@touchstart="getCur"
+					@touchend="setCur"
+				>
+					{{ item.name }}
+				</view>
 			</view>
 		</view>
 		<!--选择显示-->
 		<view v-show="!hidden" class="indexToast">{{ listCur }}</view>
-		<music-control />
+		<music-control v-if="playInfo.id" />
 	</view>
 </template>
 
@@ -41,7 +52,7 @@ export default {
 	computed: {
 		height() {
 			let height = this.CustomBar / (uni.upx2px(this.CustomBar) / this.CustomBar);
-			if (this.playInfo) {
+			if (this.playInfo.id) {
 				height += 110;
 			}
 			return `calc(100vh  - ${height}rpx)`;
@@ -88,7 +99,6 @@ export default {
 		},
 		setCur(e) {
 			this.hidden = true;
-			this.listCur = this.listCur;
 		},
 		//滑动选择Item
 		tMove(e) {
@@ -128,68 +138,96 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-page {
-	padding-top: 100upx;
-}
-.indexes {
+.singer-container {
+	width: 100%;
+	height: 100%;
 	position: relative;
-}
-.indexBar {
-	position: fixed;
-	right: 0px;
-	bottom: 0px;
-	padding: 20upx 20upx 20upx 60upx;
-	display: flex;
-	align-items: center;
-}
-.indexBar .indexBar-box {
-	width: 40upx;
-	height: auto;
-	background: #fff;
-	display: flex;
-	flex-direction: column;
-	box-shadow: 0 0 20upx rgba(0, 0, 0, 0.1);
-	border-radius: 10upx;
-}
-.indexBar-item {
-	flex: 1;
-	width: 40upx;
-	height: 40upx;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 24upx;
-	color: #888;
-}
-movable-view.indexBar-item {
-	width: 40upx;
-	height: 40upx;
-	z-index: 9;
-	position: relative;
-}
-movable-view.indexBar-item::before {
-	content: '';
-	display: block;
-	position: absolute;
-	left: 0;
-	top: 10upx;
-	height: 20upx;
-	width: 4upx;
-	background-color: #f37b1d;
-}
-.indexToast {
-	position: fixed;
-	top: 0;
-	right: 80upx;
-	bottom: 0;
-	background: rgba(0, 0, 0, 0.5);
-	width: 100upx;
-	height: 100upx;
-	border-radius: 10upx;
-	margin: auto;
-	color: #fff;
-	line-height: 100upx;
-	text-align: center;
-	font-size: 48upx;
+	.indexes {
+		position: relative;
+		.cu-item {
+			margin-bottom: 1px;
+			.singer-name {
+				font-size: 30rpx;
+				color: #000;
+			}
+			.singer-count {
+				margin-top: 2px;
+				color: rgba(0, 0, 0, 0.5);
+				font-size: 24rpx;
+			}
+		}
+
+		.cu-list.menu-avatar > .cu-item:after {
+			display: none !important;
+		}
+	}
+	.indexBar {
+		position: fixed;
+		right: 0px;
+		padding: 20upx 20upx 20upx 60upx;
+		display: flex;
+		top: 50%;
+		transform: translateY(-50%);
+		align-items: center;
+		.indexBar-box {
+			width: 40upx;
+			height: auto;
+			background: #fff;
+			display: flex;
+			flex-direction: column;
+			box-shadow: 0 0 20upx rgba(0, 0, 0, 0.1);
+			border-radius: 10upx;
+			.indexBar-item {
+				flex: 1;
+				width: 40upx;
+				height: 40upx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 24upx;
+				color: rgba(0, 0, 0, 0.5);
+				margin-top: 3px;
+				&:last-of-type {
+					margin-bottom: 3px;
+				}
+				&.active {
+					color: rgb(248, 78, 81) !important;
+					font-weight: 600;
+					font-size: 28upx;
+				}
+			}
+			movable-view.indexBar-item {
+				width: 40upx;
+				height: 40upx;
+				z-index: 9;
+				position: relative;
+			}
+			movable-view.indexBar-item::before {
+				content: '';
+				display: block;
+				position: absolute;
+				left: 0;
+				top: 10upx;
+				height: 20upx;
+				width: 4upx;
+				background-color: #f37b1d;
+			}
+		}
+	}
+	.indexToast {
+		position: fixed;
+		top: 0;
+		right: 80upx;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.5);
+		width: 100upx;
+		height: 100upx;
+		border-radius: 10upx;
+		margin: auto;
+		color: #fff;
+		line-height: 100upx;
+		text-align: center;
+		font-size: 48upx;
+	}
 }
 </style>

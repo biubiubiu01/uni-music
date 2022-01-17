@@ -1,9 +1,0 @@
-{
-  "enablePullDownRefresh": true,
-  "backgroundTextStyle": "dark",
-  "usingComponents": {
-    "song-list": "/pages/index/components/songList",
-    "music-list": "/pages/index/components/musicList",
-    "singer-list": "/pages/index/components/singerList"
-  }
-}

@@ -43,6 +43,7 @@ export default {
 	.historyTitle {
 		width: 85rpx;
 		font-size: 28rpx;
+		color: #000;
 	}
 	.historyList {
 	   width: calc(100% - 160rpx);

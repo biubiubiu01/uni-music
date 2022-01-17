@@ -1600,6 +1600,8 @@ button.cuIcon.lg {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	color: #fff;
+	font-size: 18px;
 }
 
 .cu-bar.ios .content {

@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import {getCache} from "@/utils/cache.js"
 
 /**
  *  首页的轮播图 banner
@@ -26,7 +27,7 @@ export const getBanner = (params) => {
  *  @return {Array}
  */
 export const getRecommendList = (params) => {
-	return request.post('/personalized', params)
+	return request.post('/personalized', {...params,cookie: getCache('COOKIE')})
 }
 
 /**

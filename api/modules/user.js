@@ -7,7 +7,7 @@ import request from '@/utils/request'
  *  @return {Array}
  */
 export const login = params => {
-	return request.get('/login/cellphone', params)
+	return request.get('https://nicemusic-api.lxhcool.cn/login/cellphone', params)
 }
 
 /**
@@ -16,6 +16,8 @@ export const login = params => {
 export const getLoginStatus = params => {
 	return request.get('/login/status', params)
 }
+
+
 
 /**
  *  喜欢音乐 或取消喜欢
@@ -44,7 +46,3 @@ export const getUserInfo = params => {
 export const getUserHistory = params => {
 	return request.get('/user/record', params)
 }
-
-
-
-

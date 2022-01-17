@@ -1,8 +1,0 @@
-{
-  "enablePullDownRefresh": false,
-  "backgroundTextStyle": "dark",
-  "usingComponents": {
-    "search": "/components/search/index",
-    "box-title": "/components/boxTitle/index"
-  }
-}
