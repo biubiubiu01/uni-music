@@ -1,26 +1,29 @@
 <template>
 	<view class="login-container">
-		<view class="logo"><image src="../../static/logo.png" class="logo-img"></image></view>
-		<view class="text-title">我有故事和歌，你听吗？</view>
-		<view class="login-main">
-			<view class="input-wrapper">
-				<i class="iconfont icon-phone icon"></i>
-				<input placeholder="请输入手机号" v-model="userInfo.phone" maxlength="11" />
+		<image src="../../static/loginBg.png" class="background-img"></image>
+		<view class="absolve-wrapper">
+			<view class="logo"><image src="../../static/logo.png" class="logo-img"></image></view>
+			<view class="text-title">我有故事和歌，你听吗？</view>
+			<view class="login-main">
+				<view class="input-wrapper">
+					<i class="iconfont icon-phone icon"></i>
+					<input placeholder="请输入手机号" v-model="userInfo.phone" maxlength="11" />
+				</view>
+				<view class="input-wrapper">
+					<i class="iconfont icon-password icon"></i>
+					<input v-if="isText" type="text" placeholder="请输入密码" v-model="userInfo.password" />
+					<input v-else type="password" placeholder="请输入密码" v-model="userInfo.password" />
+					<i class="iconfont eye" :class="isText ? 'icon-openEye' : 'icon-closeEye'" @click="isText = !isText"></i>
+				</view>
+				<button class="cu-btn round login-button lg cu-load" :class="{ loading: loading }" @click="getUserInfo">登录</button>
 			</view>
-			<view class="input-wrapper">
-				<i class="iconfont icon-password icon"></i>
-				<input v-if="isText" type="text" placeholder="请输入密码" v-model="userInfo.password" />
-				<input v-else type="password" placeholder="请输入密码" v-model="userInfo.password" />
-				<i class="iconfont eye" :class="isText ? 'icon-openEye' : 'icon-closeEye'" @click="isText = !isText"></i>
-			</view>
-			<button class="cu-btn round login-button lg cu-load" :class="{ loading: loading }" @click="getUserInfo">登录</button>
-		</view>
-		<view class="other-login">
-			<view class="other-text">第三方登录</view>
-			<view class="login-list">
-				<i class="iconfont icon-weixin other-item" @click="handleTest"></i>
-				<i class="iconfont icon-qq other-item" @click="handleTest"></i>
-				<i class="iconfont icon-weibo other-item" @click="handleTest"></i>
+			<view class="other-login">
+				<view class="other-text">第三方登录</view>
+				<view class="login-list">
+					<i class="iconfont icon-weixin other-item" @click="handleTest"></i>
+					<i class="iconfont icon-qq other-item" @click="handleTest"></i>
+					<i class="iconfont icon-weibo other-item" @click="handleTest"></i>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -33,7 +36,7 @@ export default {
 			loading: false,
 			isText: false,
 			userInfo: {
-				phone: '1333333333(测试账号)',
+				phone: '13333333333',
 				password: '123456'
 			}
 		};
@@ -50,7 +53,7 @@ export default {
 				.then(res => {
 					that.loading = false;
 					uni.navigateTo({
-						url: '/pages/home/index'
+						url: '/pages/index/index'
 					});
 				})
 				.catch(err => {
@@ -84,8 +87,21 @@ export default {
 	height: 100vh;
 	position: relative;
 	overflow: hidden;
-	background: url(../../static/loginBg.png) no-repeat;
-	background-size: contain;
+	// background: url(../../static/loginBg.png) no-repeat;
+	// background-size: contain;
+	.absolve-wrapper{
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.background-img{
+      width: 100%;
+	  height: 100%;
+	}
 	.logo {
 		text-align: center;
 		margin-top: 12%;

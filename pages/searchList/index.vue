@@ -136,7 +136,7 @@ export default {
 		padding: 0 20px;
 		align-items: center;
 		margin-bottom: 10px;
-		&:nth-last-of-type {
+		&:last-of-type {
 			margin-bottom: 0;
 		}
 		&.active {

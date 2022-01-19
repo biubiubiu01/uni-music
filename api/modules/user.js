@@ -7,7 +7,7 @@ import request from '@/utils/request'
  *  @return {Array}
  */
 export const login = params => {
-	return request.get('https://nicemusic-api.lxhcool.cn/login/cellphone', params)
+	return request.get('http://www.lidaqing.plus:1901/login/cellphone', params)
 }
 
 /**

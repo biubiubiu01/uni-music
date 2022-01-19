@@ -104,7 +104,7 @@ export default {
 			return this.$store.state.cookie;
 		},
 		height() {
-			let height = this.CustomBar / (uni.upx2px(this.CustomBar) / this.CustomBar) + 200;
+			let height = this.CustomBar / (uni.upx2px(this.CustomBar) / this.CustomBar) + 220;
 			return `calc(100%  - ${height}rpx)`;
 		}
 	},

@@ -123,6 +123,7 @@ export default {
         current_value: 0,
         duration_value: 0,
       },
+	  CustomBar:this.CustomBar
     };
   },
   components: { playList },

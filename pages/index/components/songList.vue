@@ -72,6 +72,7 @@ export default {
 		}
 
 		.list-item-text {
+			height: 36px;
 			// height: 3px;
 			width: 100%;
 			padding-top: 4px;

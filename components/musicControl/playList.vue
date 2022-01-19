@@ -93,9 +93,7 @@ export default {
 			align-items: center;
 			margin-bottom: 5px;
 			position: relative;
-			&:nth-last-of-type {
-				margin-bottom: 0;
-			}
+		
 			&.active {
 				background-image: linear-gradient(to right, rgba(247, 73, 79, 0.1), rgba(247, 73, 79, 0.05));
 				.music-info {
@@ -113,6 +111,9 @@ export default {
 						top: 3px;
 					}
 				}
+			}
+			&:last-of-type {
+				margin-bottom: 0;
 			}
 			.music-img {
 				width: 45px !important;

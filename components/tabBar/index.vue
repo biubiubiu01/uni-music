@@ -60,7 +60,7 @@ export default {
 		
 		handleToHome(){
 			uni.navigateTo({
-				url: '/pages/home/index'
+				url: '/pages/index/index'
 			});
 		},
 

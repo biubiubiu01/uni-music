@@ -2,7 +2,7 @@
 	<view class="singerInfo-container">
 		<view class="vague-wrapper bg-img bg-mask flex align-center" :style="{ 'background-image': 'url(' + singerInfo.cover + ')' }">
 			<cu-custom class="head-title" :isBack="true" bgColor="unset"></cu-custom>
-			<view class="day-recommend-info" :style="{ 'padding-top': '20px'}">
+			<view class="day-recommend-info" :style="{ 'padding-top': '40px'}">
 				<view class="description-wrapper">
 					<view class="title">{{ singerInfo.name }}</view>
 					<view class="tags flex">
@@ -225,7 +225,7 @@ export default {
 				padding: 0 20px;
 				align-items: center;
 				margin-bottom: 10px;
-				&:nth-last-of-type {
+				&:last-of-type {
 					margin-bottom: 0;
 				}
 				&.active {

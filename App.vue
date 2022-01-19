@@ -13,7 +13,6 @@ export default {
           Vue.prototype.CustomBar = e.statusBarHeight + 45;
         }
         // #endif
-
         // #ifdef MP-WEIXIN || MP-QQ
         Vue.prototype.StatusBar = e.statusBarHeight;
         let capsule = wx.getMenuButtonBoundingClientRect();

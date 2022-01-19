@@ -1,13 +1,16 @@
 <template>
 	<view class="day-recommend-container">
-		<view class="vague-wrapper bg-img bg-mask flex align-center">
-			<cu-custom class="head-title" :isBack="true" bgColor="unset"><block slot="content">每日推荐</block></cu-custom>
-			<view class="day-recommend-info" :style="{ 'padding-top': CustomBar + 'px' }">
-				<image :src="bgImg" mode="widthFix" class="bgImg"></image>
-				<view class="day-info">
-					<text class="bold-text">{{ day }}</text>
-					<text class="small-text">/{{ month }}</text>
-					<view class="descript">生如蝼蚁当立鸿鹄之志,命薄似纸应有不屈之心,乾坤未定,你我皆是黑马</view>
+		<view class="vague-wrapper flex align-center">
+			<image src="../../static/background.png" class="background-img"></image>
+			<view class="absolve-wrapper">
+				<cu-custom class="head-title" :isBack="true" bgColor="unset"><block slot="content">每日推荐</block></cu-custom>
+				<view class="day-recommend-info" :style="{ 'padding-top': CustomBar + 'px' }">
+					<image :src="bgImg" mode="widthFix" class="bgImg"></image>
+					<view class="day-info">
+						<text class="bold-text">{{ day }}</text>
+						<text class="small-text">/{{ month }}</text>
+						<view class="descript">生如蝼蚁当立鸿鹄之志,命薄似纸应有不屈之心,乾坤未定,你我皆是黑马</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -52,7 +55,8 @@ export default {
 			dayRecommendList: [],
 			bgImg: '',
 			day: getDay(),
-			month: getMonth()
+			month: getMonth(),
+			CustomBar:this.CustomBar-15
 		};
 	},
 	computed: mapState({
@@ -112,8 +116,21 @@ export default {
 	.vague-wrapper {
 		height: 30%;
 		width: 100%;
-		background-image: url(../../static/background.png);
 		position: relative;
+		.background-img{
+		   width: 100%;
+		   height: 100%;
+		}
+		.absolve-wrapper{
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.5);
+		}
 		.head-title {
 			color: #fff;
 			position: absolute;
@@ -200,7 +217,7 @@ export default {
 				align-items: center;
 				margin-bottom: 10px;
 				position: relative;
-				&:nth-last-of-type {
+				&:last-of-type {
 					margin-bottom: 0;
 				}
 				&.active {

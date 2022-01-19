@@ -49,8 +49,8 @@
             },
             /* ios打包配置 */
             "ios" : {
-				"UIBackgroundModes":["audio"]
-			},
+                "UIBackgroundModes" : [ "audio" ]
+            },
             /* SDK配置 */
             "sdkConfigs" : {},
             "icons" : {
@@ -93,14 +93,14 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
-		"requiredBackgroundModes": ["audio"],
+        "appid" : "wxc7129a11c8928c84",
+        "requiredBackgroundModes" : [ "audio" ],
         "setting" : {
             "urlCheck" : true,
             "es6" : false,
             "postcss" : true,
             "minified" : true,
-			"requiredBackgroundModes": ["audio"]
+            "requiredBackgroundModes" : [ "audio" ]
         },
         "usingComponents" : true,
         "permission" : {}
@@ -113,5 +113,10 @@
     },
     "mp-toutiao" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "router" : {
+            "base" : "./"
+        }
     }
 }

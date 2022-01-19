@@ -7,9 +7,13 @@ const baseURL = 'https://autumnfish.cn'
 // const baseURL = 'http://www.lidaqing.plus:1901/'
 // const baseURL = 'https://aqueous-retreat-34523.herokuapp.com/'
 // const baseURL='https://nicemusic-api.lxhcool.cn/'
-// const baseURL='http://wyyapi.biggodw.cn/'
 // const baseURL='http://124.71.236.165:3000/'
-// const baseURL='http://bao.lqjhome.cn:3000/'
+
+/**
+ * baseURL随时可能会挂，保险起见，可以去下载NeteaseCloudMusicApi，然后本地启动
+ * 由于这个baseUrl不是所有接口都能用，所以部分api里面可能存在其他baseUrl
+ */
+
 
 
 
@@ -21,16 +25,12 @@ const request = {
 					url,
 				data: {
 					...data,
-					// #ifdef H5
 					cookie: getCache('COOKIE')
-					// #endif
 				},
 				header: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/x-www-form-urlencoded', //自定义请求头信息
-					// #ifndef H5
-					'cookie': getCache('COOKIE'),
-					// #endif
+	
 				},
 
 				method: "GET",

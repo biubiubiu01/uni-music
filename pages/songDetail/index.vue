@@ -1,6 +1,8 @@
 <template>
 	<view class="song-detail-container">
-		<view class="vague-wrapper bg-img bg-mask flex align-center">
+		<view class="vague-wrapper  flex align-center">
+			<image src="../../static/background.png" class="background-img"></image>
+			<view class="absolve-wrapper">
 			<cu-custom class="head-title" :isBack="true" bgColor="unset"><block slot="content">歌单详情</block></cu-custom>
 			<view class="day-recommend-info" :style="{ 'padding-top': CustomBar + 'px' }">
 				<image :src="bgImg" mode="widthFix" class="bgImg"></image>
@@ -13,6 +15,7 @@
 					<view class="description" v-if="currentPlayList.description">简介：{{ currentPlayList.description }}</view>
 				</view>
 			</view>
+		</view>
 		</view>
 		<view class="recommend-main" :class="{ hasPlayInfo: playInfo.id }">
 			<view class="recommend-list">
@@ -47,7 +50,8 @@ export default {
 		return {
 			currentPlayList: {},
 			musicList: [],
-			bgImg: ''
+			bgImg: '',
+			CustomBar:this.CustomBar-15
 		};
 	},
 	onLoad(val) {
@@ -110,8 +114,21 @@ export default {
 	.vague-wrapper {
 		height: 30%;
 		width: 100%;
-		background-image: url(../../static/background.png);
 		position: relative;
+		.background-img{
+		   width: 100%;
+		   height: 100%;
+		}
+		.absolve-wrapper{
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,0.5);
+		}
 		.head-title {
 			color: #fff;
 			position: absolute;
@@ -203,7 +220,7 @@ export default {
 				align-items: center;
 				margin-bottom: 10px;
 				width: 100%;
-				&:nth-last-of-type {
+				&:last-of-type {
 					margin-bottom: 0;
 				}
 				&.active {
