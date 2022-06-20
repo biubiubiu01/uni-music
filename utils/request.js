@@ -4,10 +4,9 @@ import {
 
 // const baseURL = 'http://localhost:3000'
 const baseURL = 'https://autumnfish.cn'
-// const baseURL = 'http://www.lidaqing.plus:1901/'
-// const baseURL = 'https://aqueous-retreat-34523.herokuapp.com/'
 // const baseURL='https://nicemusic-api.lxhcool.cn/'
-// const baseURL='http://124.71.236.165:3000/'
+
+// const baseURL="http://www.4ever799.top:3000/"
 
 /**
  * baseURL随时可能会挂，保险起见，可以去下载NeteaseCloudMusicApi，然后本地启动

@@ -25,5 +25,5 @@ export const getSingerInfo = (params) => {
  *  @return {Array}
  */
 export const getSingerAllMusic = (params) => {
-	return request.get('http://www.lidaqing.plus:1901/artist/songs', params)
+	return request.get('/artist/songs', params)
 }

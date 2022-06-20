@@ -22,7 +22,7 @@ export const getSongList = (params) => {
  *  @return {Array}
  */
 export const getPlayListData = (params) => {
-	return request.get('http://www.lidaqing.plus:1901/playlist/detail', params)
+	return request.get('/playlist/detail', params)
 }
 
 /**
@@ -31,5 +31,5 @@ export const getPlayListData = (params) => {
  *  @return {Array}
  */
 export const getPlayDetail = (params) => {
-	return request.get('http://www.lidaqing.plus:1901/song/detail', params)
+	return request.get('/song/detail', params)
 }
