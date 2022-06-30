@@ -2,16 +2,9 @@ import {
 	getCache
 } from "@/utils/cache.js"
 
-// const baseURL = 'http://localhost:3000'
-const baseURL = 'https://autumnfish.cn'
-// const baseURL='https://nicemusic-api.lxhcool.cn/'
+const baseURL = 'https://netease-cloud-music-api-biubiubiu01.vercel.app/'
 
-// const baseURL="http://www.4ever799.top:3000/"
 
-/**
- * baseURL随时可能会挂，保险起见，可以去下载NeteaseCloudMusicApi，然后本地启动
- * 由于这个baseUrl不是所有接口都能用，所以部分api里面可能存在其他baseUrl
- */
 
 
 
@@ -20,8 +13,7 @@ const request = {
 	get(url, data) {
 		return new Promise((resolve, reject) => {
 			uni.request({
-				url: url.indexOf('http') != -1 ? url : baseURL +
-					url,
+				url:baseURL+url,
 				data: {
 					...data,
 					cookie: getCache('COOKIE')
@@ -29,7 +21,6 @@ const request = {
 				header: {
 					'Accept': 'application/json',
 					'Content-Type': 'application/x-www-form-urlencoded', //自定义请求头信息
-	
 				},
 
 				method: "GET",
