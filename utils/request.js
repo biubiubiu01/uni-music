@@ -2,7 +2,7 @@ import {
 	getCache
 } from "@/utils/cache.js"
 
-const baseURL = 'https://netease-cloud-music-api-biubiubiu01.vercel.app/'
+const baseURL = 'https://netease-cloud-music-api-biubiubiu01.vercel.app'
 
 
 
