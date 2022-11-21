@@ -2,10 +2,7 @@ import {
 	getCache
 } from "@/utils/cache.js"
 
-const baseURL = 'https://netease-cloud-music-api-biubiubiu01.vercel.app'
-
-
-
+const baseURL = 'http://139.196.103.123:3000'
 
 
 
@@ -86,7 +83,7 @@ const showError = error => {
 			case 400:
 				errorMsg = '请求参数错误'
 				break
-			case 301:
+			case 302:
 				errorMsg = '未授权，请登录'
 				break
 			case 403:
@@ -128,7 +125,7 @@ const showError = error => {
 		duration: 3000,
 		complete: function() {
 			setTimeout(function() {
-				if (error.code == 301) {
+				if (error.code == 302) {
 					uni.navigateTo({
 						url: '../login/index'
 					});
