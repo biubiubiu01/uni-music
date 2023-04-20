@@ -80,7 +80,7 @@ export default {
 		async getUserHistory() {
 			const uid = this.userInfo.id;
 			const timestamp = new Date().getTime();
-			const data = await this.$api.getUserHistory({ uid, timestamp, type: 0 });
+			const data = await this.$api.getUserHistory({ uid,timestamp,type: 0 });
 			this.musicList = data.allData.map(item => item.song);
 		},
 

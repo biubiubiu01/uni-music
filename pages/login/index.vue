@@ -36,7 +36,7 @@ export default {
 			loading: false,
 			isText: false,
 			userInfo: {
-				phone: '13333333333',
+				phone: '100000',
 				password: '123456'
 			}
 		};

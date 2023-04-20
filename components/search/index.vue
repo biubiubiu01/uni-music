@@ -42,7 +42,7 @@
 		created(){
 			this.debounceSuggest=debounce(() => {
 			    this.getSuggestList()
-			}, 250)
+			}, 500)
 			if(!this.text){
 				this.getDefaultSearch()
 			}else{
@@ -117,7 +117,7 @@
 		position: fixed;
 		left: 0;
 		right: 0;
-		top: 210rpx;
+		top: 190rpx;
 		bottom: 0;
 		.suggestMain{
 			position: absolute;

@@ -76,8 +76,6 @@
 ```
 # 克隆项目
 
-> 新版本是2.0分支，默认分支是以前的版本，切记！！！
-
 - git clone https://github.com/biubiubiu01/uni-music.git 
 - 使用 HBuilder X 导入项目
 - 修改login页面用户名密码(默认测试账号)
@@ -100,3 +98,11 @@
 ![输入图片说明](preview/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220117173526.png)
 
 ![输入图片说明](preview/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220117173539.png)
+
+## 捐赠
+
+开源不易，若觉得这个项目对你有用，可以点个[star](https://github.com/biubiubiu01/EchartsMap)，欢迎提出建议和bug :smile: 。如果这个项目对你有所帮助，可以给作者买杯咖啡加好友问题咨询。
+
+<div>
+<img src="https://i.328888.xyz/2023/02/28/zV27Q.jpeg" alt="alipay" width="250"><img src="https://i.328888.xyz/2023/02/28/zVw2H.jpeg" alt="wechat" width="250">
+</div>

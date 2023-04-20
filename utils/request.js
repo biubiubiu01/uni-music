@@ -2,7 +2,10 @@ import {
 	getCache
 } from "@/utils/cache.js"
 
-const baseURL = 'http://139.196.103.123:3000'
+const baseURL = 'http://47.98.43.231:3000'
+
+
+
 
 
 
@@ -10,7 +13,7 @@ const request = {
 	get(url, data) {
 		return new Promise((resolve, reject) => {
 			uni.request({
-				url:baseURL+url,
+				url: baseURL + url,
 				data: {
 					...data,
 					cookie: getCache('COOKIE')
@@ -83,6 +86,9 @@ const showError = error => {
 			case 400:
 				errorMsg = '请求参数错误'
 				break
+			case 301:
+				errorMsg = '未授权，请登录'
+				break;
 			case 302:
 				errorMsg = '未授权，请登录'
 				break
@@ -125,7 +131,7 @@ const showError = error => {
 		duration: 3000,
 		complete: function() {
 			setTimeout(function() {
-				if (error.code == 302) {
+				if ([301,302].includes(error.code)) {
 					uni.navigateTo({
 						url: '../login/index'
 					});

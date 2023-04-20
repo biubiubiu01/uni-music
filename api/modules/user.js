@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
 /**
- *  登录
+ *  游客登录
  *  @param  {Number} phone 
  *  @param  {Number} password 
  *  @return {Array}
  */
 export const login = params => {
-	return request.get('/login/cellphone', params)
+	return request.get('/register/anonimous', params)
 }
 
 /**
